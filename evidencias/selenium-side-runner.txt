@@ -1,19 +1,19 @@
 # selenium-side-runner 4.0.13 - Microsoft Edge 156 (pt-BR) - front https://561413-petflow-front.azurewebsites.net
-# Executado em 03/11/2026 22:20 a partir de selenium/PetFlow-QA-Sprint4.side
+# Executado em 03/11/2026 23:38 a partir de selenium/PetFlow-QA-Sprint4.side (datas ISO convertidas para dd/mm/aaaa na fase 2)
 
 ## Fase 1: AUTO-GUI-01
 info: Running test AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04)
-info: echo: qa.gui.1793755093811@petflow.test
+info: echo: qa.gui.1793759774648@petflow.test
 info: Finished test AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04) Success
-PASS node_modules/selenium-side-runner/dist/main.test.js (12.265 s)
+PASS node_modules/selenium-side-runner/dist/main.test.js (13.408 s)
   Running project PetFlow QA Sprint 4
     Running suite PetFlow GUI - Sprint 4
-      √ Running test AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04) (11606 ms)
+      √ Running test AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04) (12691 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       1 passed, 1 total
 Snapshots:   0 total
-Time:        12.329 s, estimated 30 s
+Time:        13.479 s, estimated 50 s
 Jest did not exit one second after the test run has completed.
 
 'This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
@@ -29,19 +29,19 @@ info: Running test AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08)
 info: Finished test AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08) Success
 info: Running test AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09)
 info: Finished test AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09) Success
-PASS node_modules/selenium-side-runner/dist/main.test.js (49.755 s)
+PASS node_modules/selenium-side-runner/dist/main.test.js (48.194 s)
   Running project PetFlow QA Sprint 4
     Running suite PetFlow GUI - Sprint 4
-      √ Running test AUTO-GUI-02 - Cadastro com e-mail duplicado (CT-S4-05) (5788 ms)
-      √ Running test AUTO-GUI-03 - Login com senha invalida (CT-S4-02) (5911 ms)
-      √ Running test AUTO-GUI-04 - Login valido do tutor (CT-S4-01) (9575 ms)
-      √ Running test AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08) (16217 ms)
-      √ Running test AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09) (11538 ms)
+      √ Running test AUTO-GUI-02 - Cadastro com e-mail duplicado (CT-S4-05) (6155 ms)
+      √ Running test AUTO-GUI-03 - Login com senha invalida (CT-S4-02) (5535 ms)
+      √ Running test AUTO-GUI-04 - Login valido do tutor (CT-S4-01) (9898 ms)
+      √ Running test AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08) (14362 ms)
+      √ Running test AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09) (11493 ms)
 
 Test Suites: 1 passed, 1 total
 Tests:       5 passed, 5 total
 Snapshots:   0 total
-Time:        49.823 s
+Time:        48.263 s
 Jest did not exit one second after the test run has completed.
 
 'This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
