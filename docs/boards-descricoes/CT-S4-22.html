@@ -1,0 +1,21 @@
+<h2>CT-S4-22 — Resgate sem autenticação</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que o resgate exige usuário autenticado.</p>
+<h3>Pré-condições</h3>
+<p>nenhuma.</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /gamification/redeem</code> sem cabeçalho <code>Authorization</code>, corpo <code>{"couponId": &lt;id do QA-S4-001&gt;}</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>No Swagger (sem autorizar) ou Postman (sem token), executar o resgate.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>401</b> <code>Credenciais ausentes ou inválidas. Faça login novamente.</code></li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73, PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

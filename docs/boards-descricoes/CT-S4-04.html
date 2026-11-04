@@ -1,0 +1,25 @@
+<h2>CT-S4-04 — Cadastro de tutor válido</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que um novo tutor cria a conta pela tela pública e entra automaticamente.</p>
+<h3>Pré-condições</h3>
+<p>e-mail <code>qa.tutor.a@petflow.test</code> ainda não cadastrado.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA A</code> · e-mail <code>qa.tutor.a@petflow.test</code> · telefone <code>(11) 91111-1111</code> · senha e confirmação <code>QaPetflow2026</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/login</code> e clicar em <b>Criar conta</b> (<code>/register</code>).</li>
+<li>Preencher nome, e-mail, telefone, senha e confirmação.</li>
+<li>Clicar no botão de envio.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Conta criada! Bem-vindo(a), Tutor!</code>.</li>
+<li>Redirecionamento para <code>/tutor</code>.</li>
+<li>(API) <code>POST /tutors</code> → <b>201</b> com <code>id</code> gerado e <code>role = TUTOR</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72</b></li>
+<li>Teste automatizado: AUTO-GUI-01 (Selenium IDE)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

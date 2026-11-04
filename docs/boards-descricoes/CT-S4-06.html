@@ -1,0 +1,26 @@
+<h2>CT-S4-06 — Cadastro de tutor com senha fora da regra</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar a regra de senha (mínimo 8 caracteres, com pelo menos uma letra e um número).</p>
+<h3>Pré-condições</h3>
+<p>nenhuma.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA Senha Fraca</code> · e-mail <code>qa.fraca@petflow.test</code> · senha e confirmação <code>abcdefgh</code> (8 letras, sem número).</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/register</code>.</li>
+<li>Preencher os dados acima.</li>
+<li>Enviar o formulário.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>A senha deve ter no mínimo 8 caracteres, contendo pelo menos uma letra e um número.</code></li>
+<li>Conta não criada.</li>
+<li>(API) <code>POST /tutors</code> com a mesma senha → <b>400</b> com erro de validação no campo <code>password</code>.</li>
+<li>Observação: senhas com menos de 8 caracteres são barradas antes pelo próprio navegador (atributo <code>minLength</code>), por isso o dado de entrada usa 8 letras sem número.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

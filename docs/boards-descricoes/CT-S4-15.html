@@ -1,0 +1,23 @@
+<h2>CT-S4-15 — Evento de saúde para pet inexistente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que não é possível registrar evento para um pet que não existe.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A (token no Swagger).</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /health-events</code> com <code>petId = 999999999</code>, <code>eventTypeId</code> = Vacinação, data = hoje + 30, status <code>AGENDADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>No Swagger, autorizar com o token do tutor A.</li>
+<li>Executar <code>POST /health-events</code> com o corpo acima.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>404</b> <code>Entidade não encontrada</code> (Pet 999999999).</li>
+<li>Nenhum evento criado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

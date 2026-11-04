@@ -1,0 +1,24 @@
+<h2>CT-S4-09 — Cadastro de pet com data de nascimento futura</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que a data de nascimento precisa ser passada.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A.</p>
+<h3>Dados de entrada</h3>
+<p><code>Pet Futuro QA</code> · Cachorro · SRD · nascimento = hoje + 30 dias · <code>5</code> kg.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Meus pets</b>, clicar em <b>Novo pet</b>.</li>
+<li>Preencher os dados com a data futura e salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>A data de nascimento deve ser uma data passada</code>; o pet <b>não</b> aparece na lista.</li>
+<li>Saldo continua <b>5</b>.</li>
+<li>(API) <code>POST /pets</code> → <b>400</b> com erro no campo <code>birthDate</code> (<code>A data de nascimento deve ser uma data passada</code>).</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-75</b></li>
+<li>Teste automatizado: AUTO-GUI-06 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

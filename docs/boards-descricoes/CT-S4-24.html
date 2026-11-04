@@ -1,0 +1,28 @@
+<h2>CT-S4-24 — App mobile: cadastro, login, pet e logout</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>validar o fluxo principal no app mobile publicado, integrado à mesma API.</p>
+<h3>Pré-condições</h3>
+<p>app instalado pela versão publicada no Firebase App Distribution.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA Mobile</code> · e-mail <code>qa.tutor.mobile@petflow.test</code> · senha <code>QaPetflow2026</code> · pet <code>Bob QA</code> · Cachorro · nascimento <code>15/03/2019</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir o app e criar a conta com os dados acima.</li>
+<li>Sair e entrar novamente com o mesmo e-mail e senha.</li>
+<li>Cadastrar o pet <code>Bob QA</code>.</li>
+<li>Fechar e reabrir a lista de pets; confirmar que o pet continua lá.</li>
+<li>Fazer logout.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Conta criada e login realizado sem erro.</li>
+<li>Pet <code>Bob QA</code> listado (persistido na API; também aparece no front web ao entrar com o mesmo usuário).</li>
+<li>Após o logout, o app volta à tela de login e não abre telas internas sem novo login.</li>
+</ul>
+<p>&gt; Os nomes de telas e botões deste caso precisam ser conferidos no app mobile: o repositório do app não foi analisado.</p>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72, PBI-73, PBI-75</b></li>
+<li>Teste automatizado: não automatizado (app mobile, execução manual)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

@@ -1,0 +1,22 @@
+<h2>CT-S4-17 — Consultar catálogo de cupons</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o tutor vê os cupons disponíveis com o custo em pontos.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-07 executado.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor A.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir <b>Resgatar cupons</b> (<code>/tutor/redeem</code>).</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Cupom <code>15% OFF em ração</code> (<code>QA-S4-001</code>) listado com custo <b>20 pontos</b>.</li>
+<li>Com saldo 15, o botão do cupom mostra <code>Pontos insuficientes</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-87</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

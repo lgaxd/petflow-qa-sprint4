@@ -1,0 +1,25 @@
+<h2>CT-S4-12 — Evento agendado só pontua ao ser concluído, uma única vez</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que evento <code>AGENDADO</code> não pontua e que a conclusão pontua uma vez só.</p>
+<h3>Pré-condições</h3>
+<p>tutor A com <code>Thor QA</code>; saldo <b>5</b>.</p>
+<h3>Dados de entrada</h3>
+<p>tipo <code>Vacinação</code> · <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status inicial <code>AGENDADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Eventos de saúde</b>, criar o evento com status <code>AGENDADO</code>; conferir o saldo.</li>
+<li>Executar o CT-S4-11 (mudar para <code>REALIZADO</code>); conferir o saldo.</li>
+<li>Salvar o mesmo evento novamente como <code>REALIZADO</code> (ou reenviar <code>PUT /health-events/{id}</code> com o mesmo corpo); conferir o saldo.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Após o passo 1: saldo <b>5</b> (sem pontuação).</li>
+<li>Após o passo 2: saldo <b>15</b>.</li>
+<li>Após o passo 3: saldo continua <b>15</b>; o extrato tem um único lançamento do evento.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-82</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

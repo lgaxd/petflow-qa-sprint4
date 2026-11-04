@@ -1,0 +1,25 @@
+<h2>CT-S4-08 — Cadastro de pet válido</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o tutor cadastra um pet e recebe a pontuação do cadastro.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A, saldo <b>0</b>.</p>
+<h3>Dados de entrada</h3>
+<p><code>Thor QA</code> · Cachorro · Labrador · <code>10/05/2020</code> · <code>28.5</code> kg.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir <b>Meus pets</b> (<code>/tutor/pets</code>) e clicar em <b>Novo pet</b>.</li>
+<li>Preencher os dados e clicar em <b>Salvar</b>.</li>
+<li>Voltar ao painel do tutor e conferir o saldo.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Pet cadastrado com sucesso.</code> e pet <code>Thor QA</code> na lista.</li>
+<li>Saldo de pontos = <b>5</b>.</li>
+<li>(API) <code>POST /pets</code> → <b>201</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-75</b></li>
+<li>Teste automatizado: AUTO-GUI-05 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

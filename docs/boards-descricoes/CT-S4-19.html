@@ -1,0 +1,24 @@
+<h2>CT-S4-19 — Resgate de cupom com saldo insuficiente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que não é possível resgatar com saldo menor que o custo.</p>
+<h3>Pré-condições</h3>
+<p>saldo do tutor A = <b>15</b> (antes do passo 1 do CT-S4-18); cupom <code>QA-S4-001</code> disponível.</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /gamification/redeem</code> com <code>couponId</code> do <code>QA-S4-001</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Na tela <b>Resgatar cupons</b>, verificar o botão do cupom.</li>
+<li>No Swagger, com o token do tutor A, executar o resgate.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: botão desabilitado com o texto <code>Pontos insuficientes</code>.</li>
+<li>Passo 2: <b>422</b> <code>Pontos insuficientes</code>, com detalhe de saldo atual 15 e necessário 20.</li>
+<li>Saldo continua <b>15</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

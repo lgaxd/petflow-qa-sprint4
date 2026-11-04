@@ -1,0 +1,26 @@
+<h2>CT-S4-03 — Controle de acesso por autenticação e perfil</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que rotas protegidas exigem login e que o perfil TUTOR não acessa funções de ADMIN.</p>
+<h3>Pré-condições</h3>
+<p>tutor A existe.</p>
+<h3>Dados de entrada</h3>
+<p>(a) sem login: URL <code>/tutor/pets</code>; (b) logado como tutor A: URL <code>/admin/coupons</code>; (c) API: <code>GET /tutors</code> com token do tutor A.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Sem estar logado, digitar na barra a URL <code>/tutor/pets</code>.</li>
+<li>Fazer login como tutor A.</li>
+<li>Digitar na barra a URL <code>/admin/coupons</code>.</li>
+<li>No Swagger, autorizar com o token do tutor A e executar <code>GET /tutors</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: redirecionamento para <code>/login</code>.</li>
+<li>Passo 3: redirecionamento para <code>/tutor</code> (a tela de cupons do admin não abre).</li>
+<li>Passo 4: <b>403</b> com mensagem <code>Você não tem permissão para acessar este recurso.</code></li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

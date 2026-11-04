@@ -1,0 +1,605 @@
+<!DOCTYPE html><html lang=pt-BR><head><meta charset=utf-8><title>PetFlow - Descrições das Tasks 155-178</title><style>body{font-family:Segoe UI,sans-serif;max-width:900px;margin:24px auto;padding:0 16px;color:#222}section{border:1px solid #ccc;border-radius:8px;margin:20px 0;padding:0 16px 8px}.bar{position:sticky;top:0;background:#f3f6fa;margin:0 -16px;padding:8px 16px;border-bottom:1px solid #ddd}button{margin-left:12px;padding:4px 12px;cursor:pointer}code{background:#f1f1f1;padding:0 3px}</style></head><body><h1>PetFlow QA Sprint 4 — Descrições das Tasks 155 a 178</h1><p>Clique em <b>Copiar</b>, abra a Task no Azure Boards, clique na <b>Description</b> e cole com Ctrl+V. Depois clique em <b>Save</b>.</p><section><div class=bar><b>Task 155</b> · CT-S4-01 <button onclick="copiar('CT-S4-01',this)">Copiar para a Description</button></div><div id=CT-S4-01 class=ct><h2>CT-S4-01 — Login válido do tutor</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que um tutor cadastrado entra no sistema com e-mail e senha válidos e é direcionado à área do tutor.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-04 executado (tutor A existe). Navegador sem sessão ativa.</p>
+<h3>Dados de entrada</h3>
+<p>e-mail <code>qa.tutor.a@petflow.test</code> · senha <code>QaPetflow2026</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/login</code> no front.</li>
+<li>Informar o e-mail no campo <b>E-mail</b>.</li>
+<li>Informar a senha no campo <b>Senha</b>.</li>
+<li>Clicar em <b>Entrar</b>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Bem-vindo(a), Tutor!</code>.</li>
+<li>Redirecionamento para <code>/tutor</code>, com o título <code>Olá, Tutor 👋</code>.</li>
+<li>(API) <code>POST /auth/login</code> → <b>200</b>, corpo com <code>token</code> JWT e <code>role = TUTOR</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73</b></li>
+<li>Teste automatizado: AUTO-GUI-04 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 156</b> · CT-S4-02 <button onclick="copiar('CT-S4-02',this)">Copiar para a Description</button></div><div id=CT-S4-02 class=ct><h2>CT-S4-02 — Login com senha inválida</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que credenciais incorretas são recusadas sem revelar se o e-mail existe.</p>
+<h3>Pré-condições</h3>
+<p>tutor A existe.</p>
+<h3>Dados de entrada</h3>
+<p>e-mail <code>qa.tutor.a@petflow.test</code> · senha <code>SenhaErrada99</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/login</code>.</li>
+<li>Informar o e-mail e a senha incorreta.</li>
+<li>Clicar em <b>Entrar</b>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem de erro <code>E-mail ou senha inválidos</code>.</li>
+<li>Usuário permanece em <code>/login</code>; nenhum token é gravado.</li>
+<li>(API) <code>POST /auth/login</code> → <b>401</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73</b></li>
+<li>Teste automatizado: AUTO-GUI-03 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 157</b> · CT-S4-03 <button onclick="copiar('CT-S4-03',this)">Copiar para a Description</button></div><div id=CT-S4-03 class=ct><h2>CT-S4-03 — Controle de acesso por autenticação e perfil</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que rotas protegidas exigem login e que o perfil TUTOR não acessa funções de ADMIN.</p>
+<h3>Pré-condições</h3>
+<p>tutor A existe.</p>
+<h3>Dados de entrada</h3>
+<p>(a) sem login: URL <code>/tutor/pets</code>; (b) logado como tutor A: URL <code>/admin/coupons</code>; (c) API: <code>GET /tutors</code> com token do tutor A.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Sem estar logado, digitar na barra a URL <code>/tutor/pets</code>.</li>
+<li>Fazer login como tutor A.</li>
+<li>Digitar na barra a URL <code>/admin/coupons</code>.</li>
+<li>No Swagger, autorizar com o token do tutor A e executar <code>GET /tutors</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: redirecionamento para <code>/login</code>.</li>
+<li>Passo 3: redirecionamento para <code>/tutor</code> (a tela de cupons do admin não abre).</li>
+<li>Passo 4: <b>403</b> com mensagem <code>Você não tem permissão para acessar este recurso.</code></li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 158</b> · CT-S4-04 <button onclick="copiar('CT-S4-04',this)">Copiar para a Description</button></div><div id=CT-S4-04 class=ct><h2>CT-S4-04 — Cadastro de tutor válido</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que um novo tutor cria a conta pela tela pública e entra automaticamente.</p>
+<h3>Pré-condições</h3>
+<p>e-mail <code>qa.tutor.a@petflow.test</code> ainda não cadastrado.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA A</code> · e-mail <code>qa.tutor.a@petflow.test</code> · telefone <code>(11) 91111-1111</code> · senha e confirmação <code>QaPetflow2026</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/login</code> e clicar em <b>Criar conta</b> (<code>/register</code>).</li>
+<li>Preencher nome, e-mail, telefone, senha e confirmação.</li>
+<li>Clicar no botão de envio.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Conta criada! Bem-vindo(a), Tutor!</code>.</li>
+<li>Redirecionamento para <code>/tutor</code>.</li>
+<li>(API) <code>POST /tutors</code> → <b>201</b> com <code>id</code> gerado e <code>role = TUTOR</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72</b></li>
+<li>Teste automatizado: AUTO-GUI-01 (Selenium IDE)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 159</b> · CT-S4-05 <button onclick="copiar('CT-S4-05',this)">Copiar para a Description</button></div><div id=CT-S4-05 class=ct><h2>CT-S4-05 — Cadastro de tutor com e-mail duplicado</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que o e-mail é único no cadastro.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-04 executado. Sair da sessão.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA Duplicado</code> · e-mail <code>qa.tutor.a@petflow.test</code> · telefone <code>(11) 92222-2222</code> · senha <code>QaPetflow2026</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/register</code>.</li>
+<li>Preencher os dados acima.</li>
+<li>Enviar o formulário.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Tutor já cadastrado(a) com email: qa.tutor.a@petflow.test</code>; o usuário permanece em <code>/register</code>.</li>
+<li>(API) <code>POST /tutors</code> → <b>409</b> (<code>Recurso duplicado</code>).</li>
+<li>Nenhum segundo tutor é criado com o mesmo e-mail.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72</b></li>
+<li>Teste automatizado: AUTO-GUI-02 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 160</b> · CT-S4-06 <button onclick="copiar('CT-S4-06',this)">Copiar para a Description</button></div><div id=CT-S4-06 class=ct><h2>CT-S4-06 — Cadastro de tutor com senha fora da regra</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar a regra de senha (mínimo 8 caracteres, com pelo menos uma letra e um número).</p>
+<h3>Pré-condições</h3>
+<p>nenhuma.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA Senha Fraca</code> · e-mail <code>qa.fraca@petflow.test</code> · senha e confirmação <code>abcdefgh</code> (8 letras, sem número).</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/register</code>.</li>
+<li>Preencher os dados acima.</li>
+<li>Enviar o formulário.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>A senha deve ter no mínimo 8 caracteres, contendo pelo menos uma letra e um número.</code></li>
+<li>Conta não criada.</li>
+<li>(API) <code>POST /tutors</code> com a mesma senha → <b>400</b> com erro de validação no campo <code>password</code>.</li>
+<li>Observação: senhas com menos de 8 caracteres são barradas antes pelo próprio navegador (atributo <code>minLength</code>), por isso o dado de entrada usa 8 letras sem número.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 161</b> · CT-S4-07 <button onclick="copiar('CT-S4-07',this)">Copiar para a Description</button></div><div id=CT-S4-07 class=ct><h2>CT-S4-07 — Administrador cadastra cupom de teste</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o administrador cadastra um cupom que passa a ficar disponível no catálogo.</p>
+<h3>Pré-condições</h3>
+<p>acesso à conta ADMIN.</p>
+<h3>Dados de entrada</h3>
+<p>código <code>QA-S4-001</code> · status <code>DISPONIVEL</code> · validade <code>31/12/2099</code> · template <code>15% OFF em ração</code> (20 pontos).</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Fazer login como administrador.</li>
+<li>Abrir <b>Cupons</b> (<code>/admin/coupons</code>) e clicar em <b>Novo cupom</b>.</li>
+<li>Preencher os dados e salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Cupom criado com sucesso.</code></li>
+<li>Cupom <code>QA-S4-001</code> listado com status <code>DISPONIVEL</code>.</li>
+<li>(API) <code>POST /coupons</code> → <b>201</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-86, PBI-87</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 162</b> · CT-S4-08 <button onclick="copiar('CT-S4-08',this)">Copiar para a Description</button></div><div id=CT-S4-08 class=ct><h2>CT-S4-08 — Cadastro de pet válido</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o tutor cadastra um pet e recebe a pontuação do cadastro.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A, saldo <b>0</b>.</p>
+<h3>Dados de entrada</h3>
+<p><code>Thor QA</code> · Cachorro · Labrador · <code>10/05/2020</code> · <code>28.5</code> kg.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir <b>Meus pets</b> (<code>/tutor/pets</code>) e clicar em <b>Novo pet</b>.</li>
+<li>Preencher os dados e clicar em <b>Salvar</b>.</li>
+<li>Voltar ao painel do tutor e conferir o saldo.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Pet cadastrado com sucesso.</code> e pet <code>Thor QA</code> na lista.</li>
+<li>Saldo de pontos = <b>5</b>.</li>
+<li>(API) <code>POST /pets</code> → <b>201</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-75</b></li>
+<li>Teste automatizado: AUTO-GUI-05 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 163</b> · CT-S4-09 <button onclick="copiar('CT-S4-09',this)">Copiar para a Description</button></div><div id=CT-S4-09 class=ct><h2>CT-S4-09 — Cadastro de pet com data de nascimento futura</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que a data de nascimento precisa ser passada.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A.</p>
+<h3>Dados de entrada</h3>
+<p><code>Pet Futuro QA</code> · Cachorro · SRD · nascimento = hoje + 30 dias · <code>5</code> kg.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Meus pets</b>, clicar em <b>Novo pet</b>.</li>
+<li>Preencher os dados com a data futura e salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>A data de nascimento deve ser uma data passada</code>; o pet <b>não</b> aparece na lista.</li>
+<li>Saldo continua <b>5</b>.</li>
+<li>(API) <code>POST /pets</code> → <b>400</b> com erro no campo <code>birthDate</code> (<code>A data de nascimento deve ser uma data passada</code>).</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-75</b></li>
+<li>Teste automatizado: AUTO-GUI-06 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 164</b> · CT-S4-10 <button onclick="copiar('CT-S4-10',this)">Copiar para a Description</button></div><div id=CT-S4-10 class=ct><h2>CT-S4-10 — Isolamento de dados entre tutores</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um tutor não vê nem acessa pets de outro tutor.</p>
+<h3>Pré-condições</h3>
+<p>tutor A com o pet <code>Thor QA</code> (anotar o <code>id</code>). Tutor B cadastrado.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor B; <code>GET /pets/{id do Thor QA}</code> com token do tutor B.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Fazer login como tutor B e abrir <b>Meus pets</b>.</li>
+<li>No Swagger, autorizar com o token do tutor B e executar <code>GET /pets/{id}</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: lista vazia (o <code>Thor QA</code> não aparece).</li>
+<li>Passo 2: <b>403</b> <code>Acesso negado</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-75, PBI-76</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 165</b> · CT-S4-11 <button onclick="copiar('CT-S4-11',this)">Copiar para a Description</button></div><div id=CT-S4-11 class=ct><h2>CT-S4-11 — Registrar evento de saúde realizado</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que concluir um evento de saúde gera pontos para o tutor.</p>
+<h3>Pré-condições</h3>
+<p>evento do CT-S4-12 (passo 1) agendado para o <code>Thor QA</code>; saldo <b>5</b>.</p>
+<h3>Dados de entrada</h3>
+<p>evento <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status <code>REALIZADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Eventos de saúde</b>, editar o evento e mudar o status para <code>REALIZADO</code>.</li>
+<li>Salvar e conferir o saldo no painel.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Evento com status <code>REALIZADO</code>.</li>
+<li>Saldo = <b>15</b> (+10).</li>
+<li>(API) <code>PUT /health-events/{id}</code> → <b>200</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79, PBI-82</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 166</b> · CT-S4-12 <button onclick="copiar('CT-S4-12',this)">Copiar para a Description</button></div><div id=CT-S4-12 class=ct><h2>CT-S4-12 — Evento agendado só pontua ao ser concluído, uma única vez</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que evento <code>AGENDADO</code> não pontua e que a conclusão pontua uma vez só.</p>
+<h3>Pré-condições</h3>
+<p>tutor A com <code>Thor QA</code>; saldo <b>5</b>.</p>
+<h3>Dados de entrada</h3>
+<p>tipo <code>Vacinação</code> · <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status inicial <code>AGENDADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Eventos de saúde</b>, criar o evento com status <code>AGENDADO</code>; conferir o saldo.</li>
+<li>Executar o CT-S4-11 (mudar para <code>REALIZADO</code>); conferir o saldo.</li>
+<li>Salvar o mesmo evento novamente como <code>REALIZADO</code> (ou reenviar <code>PUT /health-events/{id}</code> com o mesmo corpo); conferir o saldo.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Após o passo 1: saldo <b>5</b> (sem pontuação).</li>
+<li>Após o passo 2: saldo <b>15</b>.</li>
+<li>Após o passo 3: saldo continua <b>15</b>; o extrato tem um único lançamento do evento.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-82</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 167</b> · CT-S4-13 <button onclick="copiar('CT-S4-13',this)">Copiar para a Description</button></div><div id=CT-S4-13 class=ct><h2>CT-S4-13 — Transição de status inválida do evento</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um evento <code>REALIZADO</code> não volta para <code>AGENDADO</code>.</p>
+<h3>Pré-condições</h3>
+<p>evento do CT-S4-11 com status <code>REALIZADO</code>.</p>
+<h3>Dados de entrada</h3>
+<p>mesmo evento com status <code>AGENDADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Editar o evento e trocar o status para <code>AGENDADO</code> (ou <code>PUT /health-events/{id}</code> com <code>status = AGENDADO</code>).</li>
+<li>Salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem de erro de transição inválida; o evento permanece <code>REALIZADO</code>.</li>
+<li>(API) <b>422</b> <code>Transição de status inválida</code>.</li>
+<li>Saldo continua <b>15</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 168</b> · CT-S4-14 <button onclick="copiar('CT-S4-14',this)">Copiar para a Description</button></div><div id=CT-S4-14 class=ct><h2>CT-S4-14 — Evento de saúde com data futura</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um evento marcado como <code>REALIZADO</code> não pode ter data futura (agendado pode).</p>
+<h3>Pré-condições</h3>
+<p>tutor A com <code>Thor QA</code>.</p>
+<h3>Dados de entrada</h3>
+<p><code>Vacinação</code> · data = hoje + 30 dias · status <code>REALIZADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Eventos de saúde</b>, criar o evento com os dados acima.</li>
+<li>Salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Um evento realizado não pode ter data futura</code>; evento não criado.</li>
+<li>(API) <code>POST /health-events</code> → <b>422</b>, <code>code = FUTURE_DATE_NOT_ALLOWED</code>.</li>
+<li>Saldo inalterado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 169</b> · CT-S4-15 <button onclick="copiar('CT-S4-15',this)">Copiar para a Description</button></div><div id=CT-S4-15 class=ct><h2>CT-S4-15 — Evento de saúde para pet inexistente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que não é possível registrar evento para um pet que não existe.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A (token no Swagger).</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /health-events</code> com <code>petId = 999999999</code>, <code>eventTypeId</code> = Vacinação, data = hoje + 30, status <code>AGENDADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>No Swagger, autorizar com o token do tutor A.</li>
+<li>Executar <code>POST /health-events</code> com o corpo acima.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>404</b> <code>Entidade não encontrada</code> (Pet 999999999).</li>
+<li>Nenhum evento criado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 170</b> · CT-S4-16 <button onclick="copiar('CT-S4-16',this)">Copiar para a Description</button></div><div id=CT-S4-16 class=ct><h2>CT-S4-16 — Consultar saldo e extrato de pontos</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o tutor consulta o saldo e o histórico de pontos coerentes com as ações realizadas.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-08 e CT-S4-11 executados.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor A.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir o painel do tutor (<code>/tutor</code>) e conferir <b>Seu saldo de pontos</b> e <b>Histórico recente de pontos</b>.</li>
+<li>(API) <code>GET /gamification/points</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Saldo <b>15</b>.</li>
+<li>Extrato com 2 lançamentos: cadastro de pet (<b>+5</b>) e evento de saúde realizado (<b>+10</b>).</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-83, PBI-84</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 171</b> · CT-S4-17 <button onclick="copiar('CT-S4-17',this)">Copiar para a Description</button></div><div id=CT-S4-17 class=ct><h2>CT-S4-17 — Consultar catálogo de cupons</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o tutor vê os cupons disponíveis com o custo em pontos.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-07 executado.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor A.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir <b>Resgatar cupons</b> (<code>/tutor/redeem</code>).</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Cupom <code>15% OFF em ração</code> (<code>QA-S4-001</code>) listado com custo <b>20 pontos</b>.</li>
+<li>Com saldo 15, o botão do cupom mostra <code>Pontos insuficientes</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-87</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 172</b> · CT-S4-18 <button onclick="copiar('CT-S4-18',this)">Copiar para a Description</button></div><div id=CT-S4-18 class=ct><h2>CT-S4-18 — Resgate de cupom com saldo suficiente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar o resgate com saldo suficiente e o débito dos pontos.</p>
+<h3>Pré-condições</h3>
+<p>saldo 15 → cadastrar o pet <code>Mia QA</code> (+5) para chegar a <b>20</b>.</p>
+<h3>Dados de entrada</h3>
+<p>cupom <code>QA-S4-001</code> (20 pontos).</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Cadastrar o pet <code>Mia QA</code>; conferir saldo <b>20</b>.</li>
+<li>Abrir <b>Resgatar cupons</b>, clicar em <b>Resgatar</b> no cupom e confirmar.</li>
+<li>Conferir o saldo e a lista de cupons resgatados.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Cupom "15% OFF em ração" resgatado com sucesso!</code></li>
+<li>Saldo = <b>0</b>.</li>
+<li>Cupom aparece entre os resgatados do tutor A; deixa de estar disponível no catálogo.</li>
+<li>(API) <code>POST /gamification/redeem</code> → <b>200</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-88, PBI-89</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 173</b> · CT-S4-19 <button onclick="copiar('CT-S4-19',this)">Copiar para a Description</button></div><div id=CT-S4-19 class=ct><h2>CT-S4-19 — Resgate de cupom com saldo insuficiente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que não é possível resgatar com saldo menor que o custo.</p>
+<h3>Pré-condições</h3>
+<p>saldo do tutor A = <b>15</b> (antes do passo 1 do CT-S4-18); cupom <code>QA-S4-001</code> disponível.</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /gamification/redeem</code> com <code>couponId</code> do <code>QA-S4-001</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Na tela <b>Resgatar cupons</b>, verificar o botão do cupom.</li>
+<li>No Swagger, com o token do tutor A, executar o resgate.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: botão desabilitado com o texto <code>Pontos insuficientes</code>.</li>
+<li>Passo 2: <b>422</b> <code>Pontos insuficientes</code>, com detalhe de saldo atual 15 e necessário 20.</li>
+<li>Saldo continua <b>15</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 174</b> · CT-S4-20 <button onclick="copiar('CT-S4-20',this)">Copiar para a Description</button></div><div id=CT-S4-20 class=ct><h2>CT-S4-20 — Resgate de cupom já resgatado</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um cupom não é resgatado duas vezes.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-18 executado.</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /gamification/redeem</code> com o mesmo <code>couponId</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Com o token do tutor A, executar novamente o resgate do <code>QA-S4-001</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>422</b> (<code>Cupom não está disponível para resgate</code>).</li>
+<li>Nenhum novo resgate criado; saldo inalterado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 175</b> · CT-S4-21 <button onclick="copiar('CT-S4-21',this)">Copiar para a Description</button></div><div id=CT-S4-21 class=ct><h2>CT-S4-21 — Resgate de cupom inexistente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir o tratamento de cupom que não existe.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A.</p>
+<h3>Dados de entrada</h3>
+<p><code>couponId = 999999999</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Executar <code>POST /gamification/redeem</code> com o corpo <code>{"couponId": 999999999}</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>404</b> <code>Entidade não encontrada</code>.</li>
+<li>Saldo inalterado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 176</b> · CT-S4-22 <button onclick="copiar('CT-S4-22',this)">Copiar para a Description</button></div><div id=CT-S4-22 class=ct><h2>CT-S4-22 — Resgate sem autenticação</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que o resgate exige usuário autenticado.</p>
+<h3>Pré-condições</h3>
+<p>nenhuma.</p>
+<h3>Dados de entrada</h3>
+<p><code>POST /gamification/redeem</code> sem cabeçalho <code>Authorization</code>, corpo <code>{"couponId": &lt;id do QA-S4-001&gt;}</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>No Swagger (sem autorizar) ou Postman (sem token), executar o resgate.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>401</b> <code>Credenciais ausentes ou inválidas. Faça login novamente.</code></li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73, PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 177</b> · CT-S4-23 <button onclick="copiar('CT-S4-23',this)">Copiar para a Description</button></div><div id=CT-S4-23 class=ct><h2>CT-S4-23 — Cupons resgatados visíveis apenas ao dono</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um tutor não vê os resgates de outro.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-18 executado (anotar o <code>id</code> do resgate). Tutor B cadastrado.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor B; <code>GET /redeems/{id do resgate do tutor A}</code> com token do tutor B.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Logado como tutor B, abrir a lista de cupons resgatados.</li>
+<li>No Swagger, com o token do tutor B, executar <code>GET /redeems/{id}</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: lista vazia.</li>
+<li>Passo 2: <b>403</b> <code>Acesso negado</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-89</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section>
+<section><div class=bar><b>Task 178</b> · CT-S4-24 <button onclick="copiar('CT-S4-24',this)">Copiar para a Description</button></div><div id=CT-S4-24 class=ct><h2>CT-S4-24 — App mobile: cadastro, login, pet e logout</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>validar o fluxo principal no app mobile publicado, integrado à mesma API.</p>
+<h3>Pré-condições</h3>
+<p>app instalado pela versão publicada no Firebase App Distribution.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA Mobile</code> · e-mail <code>qa.tutor.mobile@petflow.test</code> · senha <code>QaPetflow2026</code> · pet <code>Bob QA</code> · Cachorro · nascimento <code>15/03/2019</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir o app e criar a conta com os dados acima.</li>
+<li>Sair e entrar novamente com o mesmo e-mail e senha.</li>
+<li>Cadastrar o pet <code>Bob QA</code>.</li>
+<li>Fechar e reabrir a lista de pets; confirmar que o pet continua lá.</li>
+<li>Fazer logout.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Conta criada e login realizado sem erro.</li>
+<li>Pet <code>Bob QA</code> listado (persistido na API; também aparece no front web ao entrar com o mesmo usuário).</li>
+<li>Após o logout, o app volta à tela de login e não abre telas internas sem novo login.</li>
+</ul>
+<p>&gt; Os nomes de telas e botões deste caso precisam ser conferidos no app mobile: o repositório do app não foi analisado.</p>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72, PBI-73, PBI-75</b></li>
+<li>Teste automatizado: não automatizado (app mobile, execução manual)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
+</div></section><script>function copiar(id,b){const el=document.getElementById(id);const html=el.innerHTML;const item=new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([el.innerText],{type:"text/plain"})});navigator.clipboard.write([item]).then(()=>{b.textContent="Copiado ✓"},()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand("copy");b.textContent="Copiado ✓"})}</script></body></html>

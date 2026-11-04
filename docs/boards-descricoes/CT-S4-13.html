@@ -1,0 +1,24 @@
+<h2>CT-S4-13 — Transição de status inválida do evento</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um evento <code>REALIZADO</code> não volta para <code>AGENDADO</code>.</p>
+<h3>Pré-condições</h3>
+<p>evento do CT-S4-11 com status <code>REALIZADO</code>.</p>
+<h3>Dados de entrada</h3>
+<p>mesmo evento com status <code>AGENDADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Editar o evento e trocar o status para <code>AGENDADO</code> (ou <code>PUT /health-events/{id}</code> com <code>status = AGENDADO</code>).</li>
+<li>Salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem de erro de transição inválida; o evento permanece <code>REALIZADO</code>.</li>
+<li>(API) <b>422</b> <code>Transição de status inválida</code>.</li>
+<li>Saldo continua <b>15</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

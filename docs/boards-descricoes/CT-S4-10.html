@@ -1,0 +1,23 @@
+<h2>CT-S4-10 — Isolamento de dados entre tutores</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um tutor não vê nem acessa pets de outro tutor.</p>
+<h3>Pré-condições</h3>
+<p>tutor A com o pet <code>Thor QA</code> (anotar o <code>id</code>). Tutor B cadastrado.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor B; <code>GET /pets/{id do Thor QA}</code> com token do tutor B.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Fazer login como tutor B e abrir <b>Meus pets</b>.</li>
+<li>No Swagger, autorizar com o token do tutor B e executar <code>GET /pets/{id}</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Passo 1: lista vazia (o <code>Thor QA</code> não aparece).</li>
+<li>Passo 2: <b>403</b> <code>Acesso negado</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-75, PBI-76</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

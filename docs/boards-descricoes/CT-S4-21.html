@@ -1,0 +1,22 @@
+<h2>CT-S4-21 — Resgate de cupom inexistente</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir o tratamento de cupom que não existe.</p>
+<h3>Pré-condições</h3>
+<p>logado como tutor A.</p>
+<h3>Dados de entrada</h3>
+<p><code>couponId = 999999999</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Executar <code>POST /gamification/redeem</code> com o corpo <code>{"couponId": 999999999}</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li><b>404</b> <code>Entidade não encontrada</code>.</li>
+<li>Saldo inalterado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-88</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

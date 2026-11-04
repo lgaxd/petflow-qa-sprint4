@@ -1,0 +1,24 @@
+<h2>CT-S4-11 — Registrar evento de saúde realizado</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que concluir um evento de saúde gera pontos para o tutor.</p>
+<h3>Pré-condições</h3>
+<p>evento do CT-S4-12 (passo 1) agendado para o <code>Thor QA</code>; saldo <b>5</b>.</p>
+<h3>Dados de entrada</h3>
+<p>evento <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status <code>REALIZADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Eventos de saúde</b>, editar o evento e mudar o status para <code>REALIZADO</code>.</li>
+<li>Salvar e conferir o saldo no painel.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Evento com status <code>REALIZADO</code>.</li>
+<li>Saldo = <b>15</b> (+10).</li>
+<li>(API) <code>PUT /health-events/{id}</code> → <b>200</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79, PBI-82</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

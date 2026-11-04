@@ -1,0 +1,23 @@
+<h2>CT-S4-16 — Consultar saldo e extrato de pontos</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o tutor consulta o saldo e o histórico de pontos coerentes com as ações realizadas.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-08 e CT-S4-11 executados.</p>
+<h3>Dados de entrada</h3>
+<p>login do tutor A.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Abrir o painel do tutor (<code>/tutor</code>) e conferir <b>Seu saldo de pontos</b> e <b>Histórico recente de pontos</b>.</li>
+<li>(API) <code>GET /gamification/points</code>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Saldo <b>15</b>.</li>
+<li>Extrato com 2 lançamentos: cadastro de pet (<b>+5</b>) e evento de saúde realizado (<b>+10</b>).</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-83, PBI-84</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

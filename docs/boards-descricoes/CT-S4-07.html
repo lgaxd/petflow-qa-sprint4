@@ -1,0 +1,25 @@
+<h2>CT-S4-07 — Administrador cadastra cupom de teste</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que o administrador cadastra um cupom que passa a ficar disponível no catálogo.</p>
+<h3>Pré-condições</h3>
+<p>acesso à conta ADMIN.</p>
+<h3>Dados de entrada</h3>
+<p>código <code>QA-S4-001</code> · status <code>DISPONIVEL</code> · validade <code>31/12/2099</code> · template <code>15% OFF em ração</code> (20 pontos).</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Fazer login como administrador.</li>
+<li>Abrir <b>Cupons</b> (<code>/admin/coupons</code>) e clicar em <b>Novo cupom</b>.</li>
+<li>Preencher os dados e salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Cupom criado com sucesso.</code></li>
+<li>Cupom <code>QA-S4-001</code> listado com status <code>DISPONIVEL</code>.</li>
+<li>(API) <code>POST /coupons</code> → <b>201</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-86, PBI-87</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

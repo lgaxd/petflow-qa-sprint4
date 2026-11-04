@@ -1,0 +1,24 @@
+<h2>CT-S4-14 — Evento de saúde com data futura</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que um evento marcado como <code>REALIZADO</code> não pode ter data futura (agendado pode).</p>
+<h3>Pré-condições</h3>
+<p>tutor A com <code>Thor QA</code>.</p>
+<h3>Dados de entrada</h3>
+<p><code>Vacinação</code> · data = hoje + 30 dias · status <code>REALIZADO</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Em <b>Eventos de saúde</b>, criar o evento com os dados acima.</li>
+<li>Salvar.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Um evento realizado não pode ter data futura</code>; evento não criado.</li>
+<li>(API) <code>POST /health-events</code> → <b>422</b>, <code>code = FUTURE_DATE_NOT_ALLOWED</code>.</li>
+<li>Saldo inalterado.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-79</b></li>
+<li>Teste automatizado: coleção Postman (automação API)</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

@@ -1,0 +1,26 @@
+<h2>CT-S4-01 — Login válido do tutor</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>verificar que um tutor cadastrado entra no sistema com e-mail e senha válidos e é direcionado à área do tutor.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-04 executado (tutor A existe). Navegador sem sessão ativa.</p>
+<h3>Dados de entrada</h3>
+<p>e-mail <code>qa.tutor.a@petflow.test</code> · senha <code>QaPetflow2026</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/login</code> no front.</li>
+<li>Informar o e-mail no campo <b>E-mail</b>.</li>
+<li>Informar a senha no campo <b>Senha</b>.</li>
+<li>Clicar em <b>Entrar</b>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Bem-vindo(a), Tutor!</code>.</li>
+<li>Redirecionamento para <code>/tutor</code>, com o título <code>Olá, Tutor 👋</code>.</li>
+<li>(API) <code>POST /auth/login</code> → <b>200</b>, corpo com <code>token</code> JWT e <code>role = TUTOR</code>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73</b></li>
+<li>Teste automatizado: AUTO-GUI-04 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

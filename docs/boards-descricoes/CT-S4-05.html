@@ -1,0 +1,25 @@
+<h2>CT-S4-05 — Cadastro de tutor com e-mail duplicado</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que o e-mail é único no cadastro.</p>
+<h3>Pré-condições</h3>
+<p>CT-S4-04 executado. Sair da sessão.</p>
+<h3>Dados de entrada</h3>
+<p>nome <code>Tutor QA Duplicado</code> · e-mail <code>qa.tutor.a@petflow.test</code> · telefone <code>(11) 92222-2222</code> · senha <code>QaPetflow2026</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/register</code>.</li>
+<li>Preencher os dados acima.</li>
+<li>Enviar o formulário.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem <code>Tutor já cadastrado(a) com email: qa.tutor.a@petflow.test</code>; o usuário permanece em <code>/register</code>.</li>
+<li>(API) <code>POST /tutors</code> → <b>409</b> (<code>Recurso duplicado</code>).</li>
+<li>Nenhum segundo tutor é criado com o mesmo e-mail.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-72</b></li>
+<li>Teste automatizado: AUTO-GUI-02 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>

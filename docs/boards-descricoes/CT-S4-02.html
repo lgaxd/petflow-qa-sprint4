@@ -1,0 +1,25 @@
+<h2>CT-S4-02 — Login com senha inválida</h2>
+<h3>Teste planejado e objetivo</h3>
+<p>garantir que credenciais incorretas são recusadas sem revelar se o e-mail existe.</p>
+<h3>Pré-condições</h3>
+<p>tutor A existe.</p>
+<h3>Dados de entrada</h3>
+<p>e-mail <code>qa.tutor.a@petflow.test</code> · senha <code>SenhaErrada99</code>.</p>
+<h3>Procedimento / passos de teste</h3>
+<ol>
+<li>Acessar <code>/login</code>.</li>
+<li>Informar o e-mail e a senha incorreta.</li>
+<li>Clicar em <b>Entrar</b>.</li>
+</ol>
+<h3>Dados de saída esperados</h3>
+<ul>
+<li>Mensagem de erro <code>E-mail ou senha inválidos</code>.</li>
+<li>Usuário permanece em <code>/login</code>; nenhum token é gravado.</li>
+<li>(API) <code>POST /auth/login</code> → <b>401</b>.</li>
+</ul>
+<h3>Rastreabilidade</h3>
+<ul>
+<li>PBI(s) validado(s): <b>PBI-73</b></li>
+<li>Teste automatizado: AUTO-GUI-03 (Selenium IDE) e coleção Postman</li>
+<li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
+</ul>
