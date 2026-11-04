@@ -7,7 +7,7 @@ Entrega da disciplina **Compliance, Quality Assurance & Tests** do Challenge FIA
 | Item | Link |
 |---|---|
 | **Azure Boards — plano de testes manuais (Parte A)** | https://dev.azure.com/RM562027/PetFlow |
-| **Vídeo — configuração e execução dos testes automatizados (Parte B)** | `<COLE AQUI o link do vídeo>` |
+| **Vídeo — configuração e execução dos testes automatizados (Parte B)** | https://www.youtube.com/watch?v=TdhXo4w1ZmA |
 | Aplicação web testada | https://561413-petflow-front.azurewebsites.net |
 | API testada (Swagger) | https://561413-petflow-webapp.azurewebsites.net/swagger |
 
