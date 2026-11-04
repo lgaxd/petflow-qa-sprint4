@@ -70,6 +70,7 @@ Saldo esperado do tutor A no Azure: 0 → 5 → 45 → 50 → 0.
 | Execução | Resultado | Arquivo |
 |---|---|---|
 | newman contra a API publicada no Azure | 35 requisições, 64 asserções, **0 falhas** | [evidencias/newman-azure.txt](evidencias/newman-azure.txt) · [JUnit](evidencias/newman-azure.xml) |
+| **Selenium IDE** (suíte com *Persist session*) contra o front publicado | 6/6 testes passaram | [evidencias/selenium-ide.txt](evidencias/selenium-ide.txt) |
 | selenium-side-runner contra o front publicado (Edge) | 6/6 testes passaram | [evidencias/selenium-side-runner.txt](evidencias/selenium-side-runner.txt) |
 
 ## Estrutura
@@ -78,5 +79,5 @@ Saldo esperado do tutor A no Azure: 0 → 5 → 45 → 50 → 0.
 docs/       especificação dos casos de teste manuais
 postman/    coleção e environment de exemplo (sem credenciais)
 selenium/   projeto .side do Selenium IDE e roteiro de gravação
-evidencias/ saídas reais das execuções automatizadas (newman e selenium-side-runner)
+evidencias/ saídas reais das execuções automatizadas (newman, Selenium IDE e selenium-side-runner)
 ```

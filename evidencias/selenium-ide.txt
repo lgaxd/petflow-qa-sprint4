@@ -1,0 +1,250 @@
+# Selenium IDE - suíte "PetFlow GUI - Sprint 4" (Persist session) - Run all tests in suite
+# Front: https://561413-petflow-front.azurewebsites.net - executado em 03/11/2026, 23:49-23:50
+# Projeto: selenium/PetFlow-QA-Sprint4.side (commit 5853748). Log copiado do painel do Selenium IDE.
+# Conferência pela API após a execução: tutor qa.gui.1793760576018@petflow.test (id 75) com um único pet,
+# "Thor QA" (2020-05-10, 28.5 kg, Cachorro), nenhum "Pet Futuro QA" e saldo de 5 pontos.
+
+Running 'AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04)'
+23:49:31
+1.
+open on /register OK
+23:49:31
+2.
+executeScript on localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user'); OK
+23:49:31
+3.
+open on /register OK
+23:49:34
+4.
+waitForElementPresent on xpath=//input[@type='email'] with value 15000 OK
+23:49:34
+5.
+executeScript on return 'qa.gui.' + Date.now() + '@petflow.test' with value email OK
+23:49:35
+echo: qa.gui.1793760576018@petflow.test
+23:49:36
+7.
+type on xpath=//input[@type='text'] with value Tutor QA GUI OK
+23:49:36
+8.
+type on xpath=//input[@type='email'] with value ${email} OK
+23:49:36
+9.
+type on xpath=//input[@type='tel'] with value (11) 91111-1111 OK
+23:49:36
+10.
+type on xpath=(//input[@type='password'])[1] with value QaPetflow2026 OK
+23:49:36
+11.
+type on xpath=(//input[@type='password'])[2] with value QaPetflow2026 OK
+23:49:36
+12.
+click on css=button[type=submit] OK
+23:49:36
+13.
+waitForElementPresent on xpath=//*[contains(text(),'Conta criada!')] with value 15000 OK
+23:49:36
+14.
+waitForElementVisible on xpath=//*[contains(text(),'Conta criada!')] with value 15000 OK
+23:49:40
+15.
+waitForElementPresent on xpath=//h1[contains(.,'Olá, Tutor')] with value 15000 OK
+23:49:40
+16.
+assertElementPresent on xpath=//h1[contains(.,'Olá, Tutor')] OK
+23:49:42
+17.
+click on xpath=//button[contains(.,'Sair')] OK
+23:49:42
+18.
+waitForElementPresent on css=input[type=email] with value 15000 OK
+23:49:42
+'AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04)' completed successfully
+23:49:42
+Running 'AUTO-GUI-02 - Cadastro com e-mail duplicado (CT-S4-05)'
+23:49:42
+1.
+open on /register OK
+23:49:43
+2.
+executeScript on localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user'); OK
+23:49:43
+3.
+open on /register OK
+23:49:44
+4.
+waitForElementPresent on xpath=//input[@type='email'] with value 15000 OK
+23:49:44
+5.
+type on xpath=//input[@type='text'] with value Tutor QA Duplicado OK
+23:49:45
+6.
+type on xpath=//input[@type='email'] with value ${email} OK
+23:49:45
+7.
+type on xpath=(//input[@type='password'])[1] with value QaPetflow2026 OK
+23:49:45
+8.
+type on xpath=(//input[@type='password'])[2] with value QaPetflow2026 OK
+23:49:45
+9.
+click on css=button[type=submit] OK
+23:49:45
+10.
+waitForElementPresent on xpath=//*[contains(text(),'Tutor já cadastrado')] with value 15000 OK
+23:49:45
+11.
+waitForElementVisible on xpath=//*[contains(text(),'Tutor já cadastrado')] with value 15000 OK
+23:49:47
+12.
+assertElementPresent on xpath=//h1[contains(.,'Criar conta')] OK
+23:49:47
+'AUTO-GUI-02 - Cadastro com e-mail duplicado (CT-S4-05)' completed successfully
+23:49:47
+Running 'AUTO-GUI-03 - Login com senha invalida (CT-S4-02)'
+23:49:47
+1.
+open on /login OK
+23:49:48
+2.
+executeScript on localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user'); OK
+23:49:48
+3.
+open on /login OK
+23:49:49
+4.
+waitForElementPresent on css=input[type=email] with value 15000 OK
+23:49:49
+5.
+type on css=input[type=email] with value ${email} OK
+23:49:50
+6.
+type on css=input[type=password] with value SenhaErrada99 OK
+23:49:50
+7.
+click on css=button[type=submit] OK
+23:49:50
+8.
+waitForElementPresent on xpath=//*[contains(text(),'E-mail ou senha inválidos')] with value 15000 OK
+23:49:50
+9.
+waitForElementVisible on xpath=//*[contains(text(),'E-mail ou senha inválidos')] with value 15000 OK
+23:49:52
+'AUTO-GUI-03 - Login com senha invalida (CT-S4-02)' completed successfully
+23:49:52
+Running 'AUTO-GUI-04 - Login valido do tutor (CT-S4-01)'
+23:49:52
+1.
+open on /login OK
+23:49:52
+2.
+executeScript on localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user'); OK
+23:49:53
+3.
+open on /login OK
+23:49:53
+4.
+waitForElementPresent on css=input[type=email] with value 15000 OK
+23:49:53
+5.
+type on css=input[type=email] with value ${email} OK
+23:49:54
+6.
+type on css=input[type=password] with value QaPetflow2026 OK
+23:49:54
+7.
+click on css=button[type=submit] OK
+23:49:54
+8.
+waitForElementPresent on xpath=//h1[contains(.,'Olá, Tutor')] with value 15000 OK
+23:49:55
+9.
+waitForElementVisible on xpath=//h1[contains(.,'Olá, Tutor')] with value 15000 OK
+23:49:58
+10.
+assertElementPresent on xpath=//*[contains(text(),'Seu saldo de pontos')] OK
+23:49:58
+'AUTO-GUI-04 - Login valido do tutor (CT-S4-01)' completed successfully
+23:49:58
+Running 'AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08)'
+23:49:58
+1.
+open on /tutor/pets OK
+23:49:59
+2.
+click on xpath=//button[contains(.,'Novo pet')] OK
+23:49:59
+3.
+waitForElementPresent on xpath=//form//select/option[.='Cachorro'] with value 30000 OK
+23:50:00
+4.
+click on xpath=//button[contains(.,'Cancelar')] OK
+23:50:01
+5.
+click on xpath=//button[contains(.,'Novo pet')] OK
+23:50:01
+6.
+type on xpath=(//form//input)[1] with value Thor QA OK
+23:50:01
+7.
+select on xpath=//form//select with value label=Cachorro OK
+23:50:01
+8.
+type on xpath=//form//input[@type='date'] with value 2020-05-10 OK
+23:50:02
+9.
+type on xpath=//form//input[@type='number'] with value 28.5 OK
+23:50:02
+10.
+click on xpath=//button[contains(.,'Salvar')] OK
+23:50:02
+11.
+waitForElementPresent on xpath=//*[contains(text(),'Pet cadastrado com sucesso.')] with value 15000 OK
+23:50:02
+12.
+waitForElementVisible on xpath=//*[contains(text(),'Pet cadastrado com sucesso.')] with value 15000 OK
+23:50:05
+13.
+waitForElementPresent on xpath=//*[contains(text(),'Thor QA')] with value 15000 OK
+23:50:05
+14.
+assertElementPresent on xpath=//*[contains(text(),'Thor QA')] OK
+23:50:05
+'AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08)' completed successfully
+23:50:05
+Running 'AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09)'
+23:50:05
+1.
+open on /tutor/pets OK
+23:50:06
+2.
+click on xpath=//button[contains(.,'Novo pet')] OK
+23:50:06
+3.
+waitForElementPresent on xpath=//form//select/option[.='Cachorro'] with value 30000 OK
+23:50:07
+4.
+click on xpath=//button[contains(.,'Cancelar')] OK
+23:50:08
+5.
+click on xpath=//button[contains(.,'Novo pet')] OK
+23:50:08
+6.
+type on xpath=(//form//input)[1] with value Pet Futuro QA OK
+23:50:08
+7.
+select on xpath=//form//select with value label=Cachorro OK
+23:50:08
+8.
+type on xpath=//form//input[@type='date'] with value 2030-01-01 OK
+23:50:09
+9.
+click on xpath=//button[contains(.,'Salvar')] OK
+23:50:09
+10.
+waitForElementPresent on xpath=//*[contains(text(),'A data de nascimento deve ser uma data passada')] with value 15000 OK
+23:50:09
+11.
+waitForElementVisible on xpath=//*[contains(text(),'A data de nascimento deve ser uma data passada')] with value 15000 OK
+23:50:10
+'AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09)' completed successfully
