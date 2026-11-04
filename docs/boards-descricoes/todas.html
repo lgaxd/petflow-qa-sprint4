@@ -163,7 +163,7 @@
 <h3>Pré-condições</h3>
 <p>acesso à conta ADMIN.</p>
 <h3>Dados de entrada</h3>
-<p>código <code>QA-S4-001</code> · status <code>DISPONIVEL</code> · validade <code>31/12/2099</code> · template <code>15% OFF em ração</code> (20 pontos).</p>
+<p>código <code>QA-S4-001</code> · status <code>DISPONIVEL</code> · validade <code>31/12/2099</code> · template <code>15% OFF em produtos PataFeliz</code> (id 1, 50 pontos).</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
 <li>Fazer login como administrador.</li>
@@ -264,7 +264,7 @@
 <h3>Pré-condições</h3>
 <p>evento do CT-S4-12 (passo 1) agendado para o <code>Thor QA</code>; saldo <b>5</b>.</p>
 <h3>Dados de entrada</h3>
-<p>evento <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status <code>REALIZADO</code>.</p>
+<p>evento <code>Evento de saúde - QA Sprint 4</code> (tipo <code>Consulta de Retorno</code>, 40 pontos) · data = ontem · status <code>REALIZADO</code>.</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
 <li>Em <b>Eventos de saúde</b>, editar o evento e mudar o status para <code>REALIZADO</code>.</li>
@@ -273,7 +273,7 @@
 <h3>Dados de saída esperados</h3>
 <ul>
 <li>Evento com status <code>REALIZADO</code>.</li>
-<li>Saldo = <b>15</b> (+10).</li>
+<li>Saldo = <b>45</b> (+40).</li>
 <li>(API) <code>PUT /health-events/{id}</code> → <b>200</b>.</li>
 </ul>
 <h3>Rastreabilidade</h3>
@@ -289,7 +289,7 @@
 <h3>Pré-condições</h3>
 <p>tutor A com <code>Thor QA</code>; saldo <b>5</b>.</p>
 <h3>Dados de entrada</h3>
-<p>tipo <code>Vacinação</code> · <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status inicial <code>AGENDADO</code>.</p>
+<p>tipo <code>Consulta de Retorno</code> (40 pontos) · <code>Evento de saúde - QA Sprint 4</code> · data = ontem · status inicial <code>AGENDADO</code>.</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
 <li>Em <b>Eventos de saúde</b>, criar o evento com status <code>AGENDADO</code>; conferir o saldo.</li>
@@ -299,8 +299,8 @@
 <h3>Dados de saída esperados</h3>
 <ul>
 <li>Após o passo 1: saldo <b>5</b> (sem pontuação).</li>
-<li>Após o passo 2: saldo <b>15</b>.</li>
-<li>Após o passo 3: saldo continua <b>15</b>; o extrato tem um único lançamento do evento.</li>
+<li>Após o passo 2: saldo <b>45</b>.</li>
+<li>Após o passo 3: saldo continua <b>45</b>; o extrato tem um único lançamento do evento.</li>
 </ul>
 <h3>Rastreabilidade</h3>
 <ul>
@@ -325,7 +325,7 @@
 <ul>
 <li>Mensagem de erro de transição inválida; o evento permanece <code>REALIZADO</code>.</li>
 <li>(API) <b>422</b> <code>Transição de status inválida</code>.</li>
-<li>Saldo continua <b>15</b>.</li>
+<li>Saldo continua <b>45</b>.</li>
 </ul>
 <h3>Rastreabilidade</h3>
 <ul>
@@ -340,7 +340,7 @@
 <h3>Pré-condições</h3>
 <p>tutor A com <code>Thor QA</code>.</p>
 <h3>Dados de entrada</h3>
-<p><code>Vacinação</code> · data = hoje + 30 dias · status <code>REALIZADO</code>.</p>
+<p><code>Consulta de Retorno</code> · data = hoje + 30 dias · status <code>REALIZADO</code>.</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
 <li>Em <b>Eventos de saúde</b>, criar o evento com os dados acima.</li>
@@ -365,7 +365,7 @@
 <h3>Pré-condições</h3>
 <p>logado como tutor A (token no Swagger).</p>
 <h3>Dados de entrada</h3>
-<p><code>POST /health-events</code> com <code>petId = 999999999</code>, <code>eventTypeId</code> = Vacinação, data = hoje + 30, status <code>AGENDADO</code>.</p>
+<p><code>POST /health-events</code> com <code>petId = 999999999</code>, <code>eventTypeId</code> = 3 (Consulta de Retorno), data = hoje + 30, status <code>AGENDADO</code>.</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
 <li>No Swagger, autorizar com o token do tutor A.</li>
@@ -397,8 +397,8 @@
 </ol>
 <h3>Dados de saída esperados</h3>
 <ul>
-<li>Saldo <b>15</b>.</li>
-<li>Extrato com 2 lançamentos: cadastro de pet (<b>+5</b>) e evento de saúde realizado (<b>+10</b>).</li>
+<li>Saldo <b>45</b>.</li>
+<li>Extrato com 2 lançamentos: cadastro de pet (<b>+5</b>) e evento de saúde realizado (<b>+40</b>).</li>
 </ul>
 <h3>Rastreabilidade</h3>
 <ul>
@@ -420,8 +420,8 @@
 </ol>
 <h3>Dados de saída esperados</h3>
 <ul>
-<li>Cupom <code>15% OFF em ração</code> (<code>QA-S4-001</code>) listado com custo <b>20 pontos</b>.</li>
-<li>Com saldo 15, o botão do cupom mostra <code>Pontos insuficientes</code>.</li>
+<li>Cupom <code>15% OFF em produtos PataFeliz</code> (<code>QA-S4-001</code>) listado com custo <b>50 pontos</b>.</li>
+<li>Com saldo 45, o botão do cupom mostra <code>Pontos insuficientes</code>.</li>
 </ul>
 <h3>Rastreabilidade</h3>
 <ul>
@@ -434,18 +434,18 @@
 <h3>Teste planejado e objetivo</h3>
 <p>verificar o resgate com saldo suficiente e o débito dos pontos.</p>
 <h3>Pré-condições</h3>
-<p>saldo 15 → cadastrar o pet <code>Mia QA</code> (+5) para chegar a <b>20</b>.</p>
+<p>saldo 45 → cadastrar o pet <code>Mia QA</code> (+5) para chegar a <b>50</b>.</p>
 <h3>Dados de entrada</h3>
-<p>cupom <code>QA-S4-001</code> (20 pontos).</p>
+<p>cupom <code>QA-S4-001</code> (50 pontos).</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
-<li>Cadastrar o pet <code>Mia QA</code>; conferir saldo <b>20</b>.</li>
+<li>Cadastrar o pet <code>Mia QA</code>; conferir saldo <b>50</b>.</li>
 <li>Abrir <b>Resgatar cupons</b>, clicar em <b>Resgatar</b> no cupom e confirmar.</li>
 <li>Conferir o saldo e a lista de cupons resgatados.</li>
 </ol>
 <h3>Dados de saída esperados</h3>
 <ul>
-<li>Mensagem <code>Cupom "15% OFF em ração" resgatado com sucesso!</code></li>
+<li>Mensagem <code>Cupom "15% OFF em produtos PataFeliz" resgatado com sucesso!</code></li>
 <li>Saldo = <b>0</b>.</li>
 <li>Cupom aparece entre os resgatados do tutor A; deixa de estar disponível no catálogo.</li>
 <li>(API) <code>POST /gamification/redeem</code> → <b>200</b>.</li>
@@ -461,7 +461,7 @@
 <h3>Teste planejado e objetivo</h3>
 <p>garantir que não é possível resgatar com saldo menor que o custo.</p>
 <h3>Pré-condições</h3>
-<p>saldo do tutor A = <b>15</b> (antes do passo 1 do CT-S4-18); cupom <code>QA-S4-001</code> disponível.</p>
+<p>saldo do tutor A = <b>45</b> (antes do passo 1 do CT-S4-18); cupom <code>QA-S4-001</code> disponível.</p>
 <h3>Dados de entrada</h3>
 <p><code>POST /gamification/redeem</code> com <code>couponId</code> do <code>QA-S4-001</code>.</p>
 <h3>Procedimento / passos de teste</h3>
@@ -472,8 +472,8 @@
 <h3>Dados de saída esperados</h3>
 <ul>
 <li>Passo 1: botão desabilitado com o texto <code>Pontos insuficientes</code>.</li>
-<li>Passo 2: <b>422</b> <code>Pontos insuficientes</code>, com detalhe de saldo atual 15 e necessário 20.</li>
-<li>Saldo continua <b>15</b>.</li>
+<li>Passo 2: <b>422</b> <code>Pontos insuficientes</code>, com detalhe de saldo atual 45 e necessário 50.</li>
+<li>Saldo continua <b>45</b>.</li>
 </ul>
 <h3>Rastreabilidade</h3>
 <ul>
@@ -602,4 +602,5 @@
 <li>Teste automatizado: não automatizado (app mobile, execução manual)</li>
 <li>Massa de dados controlada e especificação completa: <a href="https://github.com/lgaxd/petflow-qa-sprint4/blob/develop/docs/casos-de-teste-manuais.md">docs/casos-de-teste-manuais.md</a></li>
 </ul>
-</div></section><script>function copiar(id,b){const el=document.getElementById(id);const html=el.innerHTML;const item=new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([el.innerText],{type:"text/plain"})});navigator.clipboard.write([item]).then(()=>{b.textContent="Copiado ✓"},()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand("copy");b.textContent="Copiado ✓"})}</script></body></html>
+</div></section>
+<script>function copiar(id,b){const el=document.getElementById(id);const item=new ClipboardItem({"text/html":new Blob([el.innerHTML],{type:"text/html"}),"text/plain":new Blob([el.innerText],{type:"text/plain"})});navigator.clipboard.write([item]).then(()=>{b.textContent="Copiado ✓"},()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand("copy");b.textContent="Copiado ✓"})}</script></body></html>

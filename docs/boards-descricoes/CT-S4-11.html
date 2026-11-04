@@ -4,7 +4,7 @@
 <h3>Pré-condições</h3>
 <p>evento do CT-S4-12 (passo 1) agendado para o <code>Thor QA</code>; saldo <b>5</b>.</p>
 <h3>Dados de entrada</h3>
-<p>evento <code>Vacina V10 - QA Sprint 4</code> · data = ontem · status <code>REALIZADO</code>.</p>
+<p>evento <code>Evento de saúde - QA Sprint 4</code> (tipo <code>Consulta de Retorno</code>, 40 pontos) · data = ontem · status <code>REALIZADO</code>.</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
 <li>Em <b>Eventos de saúde</b>, editar o evento e mudar o status para <code>REALIZADO</code>.</li>
@@ -13,7 +13,7 @@
 <h3>Dados de saída esperados</h3>
 <ul>
 <li>Evento com status <code>REALIZADO</code>.</li>
-<li>Saldo = <b>15</b> (+10).</li>
+<li>Saldo = <b>45</b> (+40).</li>
 <li>(API) <code>PUT /health-events/{id}</code> → <b>200</b>.</li>
 </ul>
 <h3>Rastreabilidade</h3>

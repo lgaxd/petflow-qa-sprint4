@@ -2,18 +2,18 @@
 <h3>Teste planejado e objetivo</h3>
 <p>verificar o resgate com saldo suficiente e o débito dos pontos.</p>
 <h3>Pré-condições</h3>
-<p>saldo 15 → cadastrar o pet <code>Mia QA</code> (+5) para chegar a <b>20</b>.</p>
+<p>saldo 45 → cadastrar o pet <code>Mia QA</code> (+5) para chegar a <b>50</b>.</p>
 <h3>Dados de entrada</h3>
-<p>cupom <code>QA-S4-001</code> (20 pontos).</p>
+<p>cupom <code>QA-S4-001</code> (50 pontos).</p>
 <h3>Procedimento / passos de teste</h3>
 <ol>
-<li>Cadastrar o pet <code>Mia QA</code>; conferir saldo <b>20</b>.</li>
+<li>Cadastrar o pet <code>Mia QA</code>; conferir saldo <b>50</b>.</li>
 <li>Abrir <b>Resgatar cupons</b>, clicar em <b>Resgatar</b> no cupom e confirmar.</li>
 <li>Conferir o saldo e a lista de cupons resgatados.</li>
 </ol>
 <h3>Dados de saída esperados</h3>
 <ul>
-<li>Mensagem <code>Cupom "15% OFF em ração" resgatado com sucesso!</code></li>
+<li>Mensagem <code>Cupom "15% OFF em produtos PataFeliz" resgatado com sucesso!</code></li>
 <li>Saldo = <b>0</b>.</li>
 <li>Cupom aparece entre os resgatados do tutor A; deixa de estar disponível no catálogo.</li>
 <li>(API) <code>POST /gamification/redeem</code> → <b>200</b>.</li>

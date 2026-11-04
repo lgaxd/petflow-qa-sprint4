@@ -17,11 +17,11 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 | Administrador | Conta ADMIN do ambiente (`admin@petflow.com`). **Não registre a senha no Boards.** |
 | Pet 1 do tutor A | `Thor QA` · Cachorro · Labrador · nascimento `10/05/2020` · peso `28.5` |
 | Pet 2 do tutor A | `Mia QA` · Gato · Siamês · nascimento `01/08/2021` · peso `4.2` |
-| Evento de saúde | Tipo `Vacinação` · descrição `Vacina V10 - QA Sprint 4` · data = **ontem** |
-| Cupom de teste | Código `QA-S4-001` · status `DISPONIVEL` · validade `31/12/2099` · template `15% OFF em ração` (**20 pontos**) |
-| Regras de pontuação (seed) | Cadastro de pet = **5** · evento de saúde concluído (REALIZADO) = **10** · resgate debita o custo do cupom |
+| Evento de saúde | Tipo `Consulta de Retorno` (**40 pontos**) · descrição `Evento de saúde - QA Sprint 4` · data = **ontem** |
+| Cupom de teste | Código `QA-S4-001` · status `DISPONIVEL` · validade `31/12/2099` · template `15% OFF em produtos PataFeliz` (id 1, **50 pontos**) |
+| Regras de pontuação (ambiente publicado, Oracle FIAP) | Cadastro de pet = **5** · evento de saúde concluído (REALIZADO) = pontos do tipo de evento (`Consulta de Retorno` = **40**) · resgate debita o custo do cupom |
 
-**Ordem de execução:** os casos foram ordenados para que a saída de um seja a pré-condição do seguinte (saldo do tutor A: 0 → 5 → 15 → 20 → 0). Para reexecutar do zero, troque o sufixo dos e-mails (ex.: `qa.tutor.a2@petflow.test`) e o código do cupom (`QA-S4-002`).
+**Ordem de execução:** os casos foram ordenados para que a saída de um seja a pré-condição do seguinte (saldo do tutor A: 0 → 5 → 45 → 50 → 0). Valores conferidos na API publicada em 03/11/2026 (`GET /event-types` e catálogo de cupons). No Oracle local (seed V2) as regras são outras (`Vacinação` = 10, template 1 = 20 pontos); a coleção Postman recebe esses valores pelo environment. Para reexecutar do zero, troque o sufixo dos e-mails (ex.: `qa.tutor.a2@petflow.test`) e o código do cupom (`QA-S4-002`).
 
 **Registro da execução (recomendação):** ao executar, anote na Task o **resultado obtido** (Passou/Falhou), a data e anexe um print; depois mova a Task para **Done**. Falhas viram um item **Bug** vinculado à Task.
 
@@ -118,7 +118,7 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 
 **Objetivo:** verificar que o administrador cadastra um cupom que passa a ficar disponível no catálogo.
 **Pré-condições:** acesso à conta ADMIN.
-**Dados de entrada:** código `QA-S4-001` · status `DISPONIVEL` · validade `31/12/2099` · template `15% OFF em ração` (20 pontos).
+**Dados de entrada:** código `QA-S4-001` · status `DISPONIVEL` · validade `31/12/2099` · template `15% OFF em produtos PataFeliz` (id 1, 50 pontos).
 **Passos:**
 1. Fazer login como administrador.
 2. Abrir **Cupons** (`/admin/coupons`) e clicar em **Novo cupom**.
@@ -171,28 +171,28 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 
 **Objetivo:** verificar que concluir um evento de saúde gera pontos para o tutor.
 **Pré-condições:** evento do CT-S4-12 (passo 1) agendado para o `Thor QA`; saldo **5**.
-**Dados de entrada:** evento `Vacina V10 - QA Sprint 4` · data = ontem · status `REALIZADO`.
+**Dados de entrada:** evento `Evento de saúde - QA Sprint 4` (tipo `Consulta de Retorno`, 40 pontos) · data = ontem · status `REALIZADO`.
 **Passos:**
 1. Em **Eventos de saúde**, editar o evento e mudar o status para `REALIZADO`.
 2. Salvar e conferir o saldo no painel.
 **Dados de saída esperados:**
 - Evento com status `REALIZADO`.
-- Saldo = **15** (+10).
+- Saldo = **45** (+40).
 - (API) `PUT /health-events/{id}` → **200**.
 
 ## CT-S4-12 — Evento agendado só pontua ao ser concluído, uma única vez  (Task 166 · PBI-82)
 
 **Objetivo:** verificar que evento `AGENDADO` não pontua e que a conclusão pontua uma vez só.
 **Pré-condições:** tutor A com `Thor QA`; saldo **5**.
-**Dados de entrada:** tipo `Vacinação` · `Vacina V10 - QA Sprint 4` · data = ontem · status inicial `AGENDADO`.
+**Dados de entrada:** tipo `Consulta de Retorno` (40 pontos) · `Evento de saúde - QA Sprint 4` · data = ontem · status inicial `AGENDADO`.
 **Passos:**
 1. Em **Eventos de saúde**, criar o evento com status `AGENDADO`; conferir o saldo.
 2. Executar o CT-S4-11 (mudar para `REALIZADO`); conferir o saldo.
 3. Salvar o mesmo evento novamente como `REALIZADO` (ou reenviar `PUT /health-events/{id}` com o mesmo corpo); conferir o saldo.
 **Dados de saída esperados:**
 - Após o passo 1: saldo **5** (sem pontuação).
-- Após o passo 2: saldo **15**.
-- Após o passo 3: saldo continua **15**; o extrato tem um único lançamento do evento.
+- Após o passo 2: saldo **45**.
+- Após o passo 3: saldo continua **45**; o extrato tem um único lançamento do evento.
 
 ## CT-S4-13 — Transição de status inválida do evento  (Task 167 · PBI-79)
 
@@ -205,13 +205,13 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 **Dados de saída esperados:**
 - Mensagem de erro de transição inválida; o evento permanece `REALIZADO`.
 - (API) **422** `Transição de status inválida`.
-- Saldo continua **15**.
+- Saldo continua **45**.
 
 ## CT-S4-14 — Evento de saúde com data futura  (Task 168 · PBI-79)
 
 **Objetivo:** garantir que um evento marcado como `REALIZADO` não pode ter data futura (agendado pode).
 **Pré-condições:** tutor A com `Thor QA`.
-**Dados de entrada:** `Vacinação` · data = hoje + 30 dias · status `REALIZADO`.
+**Dados de entrada:** `Consulta de Retorno` · data = hoje + 30 dias · status `REALIZADO`.
 **Passos:**
 1. Em **Eventos de saúde**, criar o evento com os dados acima.
 2. Salvar.
@@ -224,7 +224,7 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 
 **Objetivo:** garantir que não é possível registrar evento para um pet que não existe.
 **Pré-condições:** logado como tutor A (token no Swagger).
-**Dados de entrada:** `POST /health-events` com `petId = 999999999`, `eventTypeId` = Vacinação, data = hoje + 30, status `AGENDADO`.
+**Dados de entrada:** `POST /health-events` com `petId = 999999999`, `eventTypeId` = 3 (Consulta de Retorno), data = hoje + 30, status `AGENDADO`.
 **Passos:**
 1. No Swagger, autorizar com o token do tutor A.
 2. Executar `POST /health-events` com o corpo acima.
@@ -241,8 +241,8 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 1. Abrir o painel do tutor (`/tutor`) e conferir **Seu saldo de pontos** e **Histórico recente de pontos**.
 2. (API) `GET /gamification/points`.
 **Dados de saída esperados:**
-- Saldo **15**.
-- Extrato com 2 lançamentos: cadastro de pet (**+5**) e evento de saúde realizado (**+10**).
+- Saldo **45**.
+- Extrato com 2 lançamentos: cadastro de pet (**+5**) e evento de saúde realizado (**+40**).
 
 ## CT-S4-17 — Consultar catálogo de cupons  (Task 171 · PBI-87)
 
@@ -252,20 +252,20 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 **Passos:**
 1. Abrir **Resgatar cupons** (`/tutor/redeem`).
 **Dados de saída esperados:**
-- Cupom `15% OFF em ração` (`QA-S4-001`) listado com custo **20 pontos**.
-- Com saldo 15, o botão do cupom mostra `Pontos insuficientes`.
+- Cupom `15% OFF em produtos PataFeliz` (`QA-S4-001`) listado com custo **50 pontos**.
+- Com saldo 45, o botão do cupom mostra `Pontos insuficientes`.
 
 ## CT-S4-18 — Resgate de cupom com saldo suficiente  (Task 172 · PBI-88, PBI-89)
 
 **Objetivo:** verificar o resgate com saldo suficiente e o débito dos pontos.
-**Pré-condições:** saldo 15 → cadastrar o pet `Mia QA` (+5) para chegar a **20**.
-**Dados de entrada:** cupom `QA-S4-001` (20 pontos).
+**Pré-condições:** saldo 45 → cadastrar o pet `Mia QA` (+5) para chegar a **50**.
+**Dados de entrada:** cupom `QA-S4-001` (50 pontos).
 **Passos:**
-1. Cadastrar o pet `Mia QA`; conferir saldo **20**.
+1. Cadastrar o pet `Mia QA`; conferir saldo **50**.
 2. Abrir **Resgatar cupons**, clicar em **Resgatar** no cupom e confirmar.
 3. Conferir o saldo e a lista de cupons resgatados.
 **Dados de saída esperados:**
-- Mensagem `Cupom "15% OFF em ração" resgatado com sucesso!`
+- Mensagem `Cupom "15% OFF em produtos PataFeliz" resgatado com sucesso!`
 - Saldo = **0**.
 - Cupom aparece entre os resgatados do tutor A; deixa de estar disponível no catálogo.
 - (API) `POST /gamification/redeem` → **200**.
@@ -273,15 +273,15 @@ Rastreabilidade: cada caso corresponde a uma Task do Azure Boards (IDs 155 a 178
 ## CT-S4-19 — Resgate de cupom com saldo insuficiente  (Task 173 · PBI-88)
 
 **Objetivo:** garantir que não é possível resgatar com saldo menor que o custo.
-**Pré-condições:** saldo do tutor A = **15** (antes do passo 1 do CT-S4-18); cupom `QA-S4-001` disponível.
+**Pré-condições:** saldo do tutor A = **45** (antes do passo 1 do CT-S4-18); cupom `QA-S4-001` disponível.
 **Dados de entrada:** `POST /gamification/redeem` com `couponId` do `QA-S4-001`.
 **Passos:**
 1. Na tela **Resgatar cupons**, verificar o botão do cupom.
 2. No Swagger, com o token do tutor A, executar o resgate.
 **Dados de saída esperados:**
 - Passo 1: botão desabilitado com o texto `Pontos insuficientes`.
-- Passo 2: **422** `Pontos insuficientes`, com detalhe de saldo atual 15 e necessário 20.
-- Saldo continua **15**.
+- Passo 2: **422** `Pontos insuficientes`, com detalhe de saldo atual 45 e necessário 50.
+- Saldo continua **45**.
 
 ## CT-S4-20 — Resgate de cupom já resgatado  (Task 174 · PBI-88)
 
