@@ -1,3 +1,19 @@
+# Environments com credenciais (só o .example é versionado)
 local.postman_environment.json
 *.local.json
+*.postman_environment.json
+!*.postman_environment.example.json
+.env
+.env.*
+
+# Execução local
 newman/
+node_modules/
+*.log
+
+# Editor e sistema operacional
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
