@@ -1,15 +1,15 @@
 {
-  "id": "df37a84c-1d67-4fc4-80b2-58e90650b1ea",
+  "id": "c34f0691-48cc-45d4-bb79-bcdc591ef364",
   "version": "2.0",
   "name": "PetFlow QA Sprint 4",
   "url": "https://561413-petflow-front.azurewebsites.net",
   "tests": [
     {
-      "id": "eb966119-542b-4973-b72a-f39c23e27604",
+      "id": "19379523-5142-4789-a77b-59f4d7ec1923",
       "name": "AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04)",
       "commands": [
         {
-          "id": "abe97fd7-5116-4516-bebb-ccba38aaa5f6",
+          "id": "496cd269-7770-40d5-a77e-7dd25d09130e",
           "comment": "",
           "command": "open",
           "target": "/register",
@@ -17,7 +17,31 @@
           "value": ""
         },
         {
-          "id": "519207a0-d9a0-4260-94ee-a4aeafa5d972",
+          "id": "37af5f2c-dfb3-4d68-bc9e-a9026bce34bb",
+          "comment": "",
+          "command": "executeScript",
+          "target": "localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "8f46649a-4cd4-4dfc-ac3f-dc18a27b9641",
+          "comment": "",
+          "command": "open",
+          "target": "/register",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "1fda5826-748a-455b-9718-59f01a16e4cd",
+          "comment": "",
+          "command": "waitForElementPresent",
+          "target": "xpath=//input[@type='email']",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "b3cd6194-531b-448a-afad-b38f96c87630",
           "comment": "",
           "command": "executeScript",
           "target": "return 'qa.gui.' + Date.now() + '@petflow.test'",
@@ -25,7 +49,7 @@
           "value": "email"
         },
         {
-          "id": "db5662fa-b736-458c-a8a2-047139e43475",
+          "id": "723704a9-6ac3-46fd-80e0-2cce2727e12a",
           "comment": "",
           "command": "echo",
           "target": "${email}",
@@ -33,7 +57,7 @@
           "value": ""
         },
         {
-          "id": "d25f4d1e-db9b-45dc-80b7-a4947b46587f",
+          "id": "a149a6d4-2e9b-419c-ba4a-d8f0d10a1442",
           "comment": "",
           "command": "type",
           "target": "xpath=//input[@type='text']",
@@ -41,7 +65,7 @@
           "value": "Tutor QA GUI"
         },
         {
-          "id": "b2275bc0-d5d3-41a3-bc6f-7dcebb9ff974",
+          "id": "43a27a1f-6f0d-47e6-8317-558477873a49",
           "comment": "",
           "command": "type",
           "target": "xpath=//input[@type='email']",
@@ -49,7 +73,7 @@
           "value": "${email}"
         },
         {
-          "id": "094be6ef-0dea-4b65-859b-001a634234d1",
+          "id": "ce70e600-abbb-4631-a1fb-04894f63970b",
           "comment": "",
           "command": "type",
           "target": "xpath=//input[@type='tel']",
@@ -57,7 +81,7 @@
           "value": "(11) 91111-1111"
         },
         {
-          "id": "0c959b45-3ea6-4428-8071-dba1587e73bf",
+          "id": "9b5da303-6b08-4d46-894e-5b5d5fffa5b0",
           "comment": "",
           "command": "type",
           "target": "xpath=(//input[@type='password'])[1]",
@@ -65,7 +89,7 @@
           "value": "QaPetflow2026"
         },
         {
-          "id": "1c8f96ee-1fee-4a5a-9993-72b9dd9f090f",
+          "id": "c3e4450a-2fc8-4761-810c-4c3baf035060",
           "comment": "",
           "command": "type",
           "target": "xpath=(//input[@type='password'])[2]",
@@ -73,7 +97,7 @@
           "value": "QaPetflow2026"
         },
         {
-          "id": "9f1d6b6d-870c-43eb-ba71-bc85dfc0abc6",
+          "id": "ff658f71-1c19-4b46-b0d1-97804121df1e",
           "comment": "",
           "command": "click",
           "target": "css=button[type=submit]",
@@ -81,7 +105,7 @@
           "value": ""
         },
         {
-          "id": "f87300bc-bac7-4b31-a2f8-be18b27e9e8e",
+          "id": "cb250109-914e-4b1d-9f1e-339f0c4224c7",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//*[contains(text(),'Conta criada!')]",
@@ -89,7 +113,7 @@
           "value": "15000"
         },
         {
-          "id": "197b1b4a-872e-4708-940b-ca6c2bd4c437",
+          "id": "4d571978-2ca0-4ab5-b594-6c2c6f327f05",
           "comment": "",
           "command": "waitForElementVisible",
           "target": "xpath=//*[contains(text(),'Conta criada!')]",
@@ -97,7 +121,7 @@
           "value": "15000"
         },
         {
-          "id": "ed346d5f-8836-4d29-a5c6-f3315be5a087",
+          "id": "fa2e7dc7-56e2-4e92-9aa2-302ef4663d23",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//h1[contains(.,'Olá, Tutor')]",
@@ -105,7 +129,7 @@
           "value": "15000"
         },
         {
-          "id": "d84b3e13-51dd-4d94-8d0c-c798dbe9f47f",
+          "id": "d5462817-cbd7-45ce-b766-7abb65ace261",
           "comment": "",
           "command": "assertElementPresent",
           "target": "xpath=//h1[contains(.,'Olá, Tutor')]",
@@ -113,7 +137,7 @@
           "value": ""
         },
         {
-          "id": "44449d52-bb65-4d71-9322-819348d7e472",
+          "id": "2af865e6-0e08-4093-8664-b81bab238130",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Sair')]",
@@ -121,7 +145,7 @@
           "value": ""
         },
         {
-          "id": "ead41544-17ea-4654-8ecd-cf4f1bf92e4a",
+          "id": "ae3766ea-02eb-4924-a8e6-f4d64c41f2f9",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "css=input[type=email]",
@@ -131,11 +155,11 @@
       ]
     },
     {
-      "id": "abd0ed9a-fabe-4d7c-9bff-ab25432cacd1",
+      "id": "00f9fb39-a715-45bc-98a9-d7be80ebe87e",
       "name": "AUTO-GUI-02 - Cadastro com e-mail duplicado (CT-S4-05)",
       "commands": [
         {
-          "id": "1019998c-ff5a-4a05-9e6a-caff501686dc",
+          "id": "cfe29999-2608-4ffe-adc9-100dd353d96e",
           "comment": "",
           "command": "open",
           "target": "/register",
@@ -143,7 +167,31 @@
           "value": ""
         },
         {
-          "id": "b508dbd6-44ff-4297-8719-f68cd151ef9d",
+          "id": "973b867f-40ed-4c42-8c7d-0e5c13bb1578",
+          "comment": "",
+          "command": "executeScript",
+          "target": "localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "fbfb42b0-6d27-41f3-b656-bcb5961bcaac",
+          "comment": "",
+          "command": "open",
+          "target": "/register",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "28f1db24-c840-46a0-aca6-1c2a8a902ebe",
+          "comment": "",
+          "command": "waitForElementPresent",
+          "target": "xpath=//input[@type='email']",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "e0286a44-9d5c-4114-af13-3659c73e1652",
           "comment": "",
           "command": "type",
           "target": "xpath=//input[@type='text']",
@@ -151,7 +199,7 @@
           "value": "Tutor QA Duplicado"
         },
         {
-          "id": "f1767750-77a1-4d8e-82d7-916f4f9a3e93",
+          "id": "a6848d4a-d4e0-4622-b41e-98fc5578c23c",
           "comment": "",
           "command": "type",
           "target": "xpath=//input[@type='email']",
@@ -159,7 +207,7 @@
           "value": "${email}"
         },
         {
-          "id": "57b04345-b23e-402f-9f5a-40a2d96544e0",
+          "id": "e519920b-e0df-434f-ad16-33304fa02d41",
           "comment": "",
           "command": "type",
           "target": "xpath=(//input[@type='password'])[1]",
@@ -167,7 +215,7 @@
           "value": "QaPetflow2026"
         },
         {
-          "id": "efd7f4d6-f3e2-4411-97e0-a15c0938caa2",
+          "id": "8c35d038-5463-4c76-bd75-d3beefd11812",
           "comment": "",
           "command": "type",
           "target": "xpath=(//input[@type='password'])[2]",
@@ -175,7 +223,7 @@
           "value": "QaPetflow2026"
         },
         {
-          "id": "b000875b-3e0f-467a-9276-500dcf01eaa6",
+          "id": "dd1ad28c-3a10-4d80-89d5-71af39bfcb95",
           "comment": "",
           "command": "click",
           "target": "css=button[type=submit]",
@@ -183,7 +231,7 @@
           "value": ""
         },
         {
-          "id": "0ebab729-d805-4990-b654-379a8fc7da9b",
+          "id": "9f3b9853-a96a-4221-b314-0a4368edcf4b",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//*[contains(text(),'Tutor já cadastrado')]",
@@ -191,7 +239,7 @@
           "value": "15000"
         },
         {
-          "id": "fbf67a6c-f739-4660-981f-d8d75888546f",
+          "id": "c7b16541-6496-4b98-8419-c5f80202aeff",
           "comment": "",
           "command": "waitForElementVisible",
           "target": "xpath=//*[contains(text(),'Tutor já cadastrado')]",
@@ -199,7 +247,7 @@
           "value": "15000"
         },
         {
-          "id": "aac7ce75-3380-4cf3-8368-bbcfa6ee5a29",
+          "id": "b0135957-765c-48ba-8e99-4a9899bb3d41",
           "comment": "",
           "command": "assertElementPresent",
           "target": "xpath=//h1[contains(.,'Criar conta')]",
@@ -209,11 +257,11 @@
       ]
     },
     {
-      "id": "fe1a39b7-714f-4165-8934-2eb6e4a2eb80",
+      "id": "e08c3adf-a647-43e3-8094-df6845d0917f",
       "name": "AUTO-GUI-03 - Login com senha invalida (CT-S4-02)",
       "commands": [
         {
-          "id": "fb3ac79a-7515-416b-8140-beedc13cf7ec",
+          "id": "aa7b2820-7101-4d41-8822-1a4a41f2ac42",
           "comment": "",
           "command": "open",
           "target": "/login",
@@ -221,7 +269,31 @@
           "value": ""
         },
         {
-          "id": "c453902b-d87b-4883-aae3-42845de15315",
+          "id": "3606e092-f235-4317-9f66-0fdf3c5a1f73",
+          "comment": "",
+          "command": "executeScript",
+          "target": "localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c1cf5017-cf6d-4fac-b6cf-07df5b26b0d0",
+          "comment": "",
+          "command": "open",
+          "target": "/login",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "44f8f952-603b-4ada-923f-9c629401a018",
+          "comment": "",
+          "command": "waitForElementPresent",
+          "target": "css=input[type=email]",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "019f0f74-01ff-4fd1-8d8a-318b3dda230f",
           "comment": "",
           "command": "type",
           "target": "css=input[type=email]",
@@ -229,7 +301,7 @@
           "value": "${email}"
         },
         {
-          "id": "fe379dc6-5c15-4801-95a0-a5b4b4457866",
+          "id": "b411e3d4-717b-48cb-95d5-6fcfa2da2cd3",
           "comment": "",
           "command": "type",
           "target": "css=input[type=password]",
@@ -237,7 +309,7 @@
           "value": "SenhaErrada99"
         },
         {
-          "id": "c4c9586f-2047-474e-8829-fec287d8fdad",
+          "id": "b172db62-7241-4579-9814-f5318f343541",
           "comment": "",
           "command": "click",
           "target": "css=button[type=submit]",
@@ -245,7 +317,7 @@
           "value": ""
         },
         {
-          "id": "e6cc599c-cb80-4334-a2a0-93fe284f2642",
+          "id": "f7c4dcb0-9ae5-4a7c-9a10-418f8beb645d",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//*[contains(text(),'E-mail ou senha inválidos')]",
@@ -253,7 +325,7 @@
           "value": "15000"
         },
         {
-          "id": "e461573f-b6ec-45d3-a569-5c761dfba719",
+          "id": "4ef49a93-ea45-4c69-823e-bd8fb76bb25d",
           "comment": "",
           "command": "waitForElementVisible",
           "target": "xpath=//*[contains(text(),'E-mail ou senha inválidos')]",
@@ -263,11 +335,11 @@
       ]
     },
     {
-      "id": "e3b05cb6-07e7-4d91-97e2-718d7f4f51f8",
+      "id": "66ca9e18-7076-44d8-9d67-89a70efadf1c",
       "name": "AUTO-GUI-04 - Login valido do tutor (CT-S4-01)",
       "commands": [
         {
-          "id": "5c7ecaec-b771-4906-8f4c-7889293cf35a",
+          "id": "43f5ac7a-0b54-4d52-bc26-0eb1b5f03e84",
           "comment": "",
           "command": "open",
           "target": "/login",
@@ -275,7 +347,31 @@
           "value": ""
         },
         {
-          "id": "c2e83c07-d7a6-4c4f-8414-d0b0d248e854",
+          "id": "c41e2bd4-42e9-4140-ae6e-fe76e0719949",
+          "comment": "",
+          "command": "executeScript",
+          "target": "localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "94633f9b-8412-4817-91e4-ca199571a671",
+          "comment": "",
+          "command": "open",
+          "target": "/login",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "dd7abac6-f8a2-4969-b774-f013cb6937cc",
+          "comment": "",
+          "command": "waitForElementPresent",
+          "target": "css=input[type=email]",
+          "targets": [],
+          "value": "15000"
+        },
+        {
+          "id": "a781ed2d-4d47-4b4b-8924-eacbf1fd588d",
           "comment": "",
           "command": "type",
           "target": "css=input[type=email]",
@@ -283,7 +379,7 @@
           "value": "${email}"
         },
         {
-          "id": "bc81a8e9-b538-4c20-abfd-cc14d062ffa7",
+          "id": "5b677525-2a0e-4a2a-b609-fd7768ed22b5",
           "comment": "",
           "command": "type",
           "target": "css=input[type=password]",
@@ -291,7 +387,7 @@
           "value": "QaPetflow2026"
         },
         {
-          "id": "0cf792ad-fef0-4728-8c20-916365aad99d",
+          "id": "963b9b03-3a29-478f-b037-5784189ac7d4",
           "comment": "",
           "command": "click",
           "target": "css=button[type=submit]",
@@ -299,7 +395,7 @@
           "value": ""
         },
         {
-          "id": "6ffc757e-bfa2-4f83-b227-86da9045314b",
+          "id": "92c689fd-3b92-4cbc-9cc5-c91403eee732",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//h1[contains(.,'Olá, Tutor')]",
@@ -307,7 +403,7 @@
           "value": "15000"
         },
         {
-          "id": "92aa6dea-b093-4011-a599-f1fe85991a79",
+          "id": "ab8a6461-e701-4534-8c9b-0b1c65a91d5a",
           "comment": "",
           "command": "waitForElementVisible",
           "target": "xpath=//h1[contains(.,'Olá, Tutor')]",
@@ -315,7 +411,7 @@
           "value": "15000"
         },
         {
-          "id": "e62b60b6-1cdd-44ef-948f-9e84e9a91c5b",
+          "id": "418c1858-2fe9-40e6-86c6-ba186b8e7c88",
           "comment": "",
           "command": "assertElementPresent",
           "target": "xpath=//*[contains(text(),'Seu saldo de pontos')]",
@@ -325,11 +421,11 @@
       ]
     },
     {
-      "id": "80186fea-d076-44b0-bdb7-a2a7ccd1a604",
+      "id": "0bbba99f-9a67-43cf-9af2-2aa07abd3bb4",
       "name": "AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08)",
       "commands": [
         {
-          "id": "1ffd4c82-7895-4d4d-a5dc-45bf5bed0528",
+          "id": "1ddc5c33-0ab3-4d3c-8340-949b9fb7ab40",
           "comment": "",
           "command": "open",
           "target": "/tutor/pets",
@@ -337,7 +433,7 @@
           "value": ""
         },
         {
-          "id": "41bb6de9-05a4-4e71-974c-e9cadbef67e6",
+          "id": "d8e45a10-cce1-48c0-97ca-554e65dff7e9",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Novo pet')]",
@@ -345,7 +441,7 @@
           "value": ""
         },
         {
-          "id": "2bd73199-aa7f-45a7-8063-e9fb5cee155a",
+          "id": "ca8ac880-c764-425d-aea1-c37c9736270a",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//form//select/option[.='Cachorro']",
@@ -353,7 +449,7 @@
           "value": "30000"
         },
         {
-          "id": "d21da87f-b520-49c2-9a6f-13037c11bc72",
+          "id": "950dba68-2734-4c1a-b5bb-fb24e335f551",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Cancelar')]",
@@ -361,7 +457,7 @@
           "value": ""
         },
         {
-          "id": "308e6dce-e94d-42a4-8503-67b21780fe4b",
+          "id": "ca5231b6-d9be-4283-a75f-92be13a5c57d",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Novo pet')]",
@@ -369,7 +465,7 @@
           "value": ""
         },
         {
-          "id": "ed184ee6-7f9b-45bc-98b7-6ba220ca8b99",
+          "id": "6f0bb915-5b3e-4a98-adf5-2867850b34e5",
           "comment": "",
           "command": "type",
           "target": "xpath=(//form//input)[1]",
@@ -377,7 +473,7 @@
           "value": "Thor QA"
         },
         {
-          "id": "23cd6ba7-b60a-4211-ad40-9461f340dda4",
+          "id": "2b44c5a9-0c92-4324-a970-f732d22c9c92",
           "comment": "",
           "command": "select",
           "target": "xpath=//form//select",
@@ -385,7 +481,7 @@
           "value": "label=Cachorro"
         },
         {
-          "id": "c70302a7-229f-45ce-9202-ce3c7cc90082",
+          "id": "04d72945-eec7-44f0-b4a7-36a129bb29bf",
           "comment": "",
           "command": "type",
           "target": "xpath=//form//input[@type='date']",
@@ -393,7 +489,7 @@
           "value": "2020-05-10"
         },
         {
-          "id": "95b3d9d0-8a38-4a38-b62b-76e1d983cf82",
+          "id": "8d8e416c-655f-416f-8f86-6a4352bdb0db",
           "comment": "",
           "command": "type",
           "target": "xpath=//form//input[@type='number']",
@@ -401,7 +497,7 @@
           "value": "28.5"
         },
         {
-          "id": "d4a70a74-53dc-49bc-91c5-22e7ea41f6f3",
+          "id": "c78c9617-c2ff-4986-bbbd-89205fd3a741",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Salvar')]",
@@ -409,7 +505,7 @@
           "value": ""
         },
         {
-          "id": "c57666ab-bea2-496a-9eef-daf05be3364e",
+          "id": "908a0a7d-1824-413f-9c76-c42f99cb116f",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//*[contains(text(),'Pet cadastrado com sucesso.')]",
@@ -417,7 +513,7 @@
           "value": "15000"
         },
         {
-          "id": "2fdda732-3c87-4e64-995e-eacf50665668",
+          "id": "f389bca7-3af6-4164-ac94-4a388fd9bf2c",
           "comment": "",
           "command": "waitForElementVisible",
           "target": "xpath=//*[contains(text(),'Pet cadastrado com sucesso.')]",
@@ -425,7 +521,7 @@
           "value": "15000"
         },
         {
-          "id": "7742ef92-6661-4e43-9ca8-ea483023e1d3",
+          "id": "33526d83-a799-4ea3-9870-a07b71c8c21e",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//*[contains(text(),'Thor QA')]",
@@ -433,7 +529,7 @@
           "value": "15000"
         },
         {
-          "id": "8cd9b01b-51e1-40fd-9299-0b5dbc2f411f",
+          "id": "9e30f850-8d2e-4375-b76f-c531c537b3c6",
           "comment": "",
           "command": "assertElementPresent",
           "target": "xpath=//*[contains(text(),'Thor QA')]",
@@ -443,11 +539,11 @@
       ]
     },
     {
-      "id": "e7af88b4-c79a-49b6-849e-386403b2c59e",
+      "id": "6bde2663-ea97-407a-8204-b47f2a919638",
       "name": "AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09)",
       "commands": [
         {
-          "id": "8b2addf9-3ee8-43fa-ae15-a81f34119295",
+          "id": "cae983e1-5690-4073-9388-91d3dc2b384d",
           "comment": "",
           "command": "open",
           "target": "/tutor/pets",
@@ -455,7 +551,7 @@
           "value": ""
         },
         {
-          "id": "5933b403-7b55-4b9c-9413-8fb4e8ea363c",
+          "id": "649bed46-80f7-4e19-8750-18756e5c84e4",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Novo pet')]",
@@ -463,7 +559,7 @@
           "value": ""
         },
         {
-          "id": "133ba9d8-06bf-4de0-9bda-078e4ccbc095",
+          "id": "8d376935-23b5-417c-9a50-9c1274ce8742",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//form//select/option[.='Cachorro']",
@@ -471,7 +567,7 @@
           "value": "30000"
         },
         {
-          "id": "6ba7d045-d9cc-4bba-961c-d1431894b759",
+          "id": "93f2dc04-9aa5-4bc1-957f-4a8cbc98cf30",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Cancelar')]",
@@ -479,7 +575,7 @@
           "value": ""
         },
         {
-          "id": "f1c80e1d-7a1c-4f5a-a98d-d32d646752e3",
+          "id": "28ea1db6-b9ba-4d4c-bbad-729c3a60afdf",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Novo pet')]",
@@ -487,7 +583,7 @@
           "value": ""
         },
         {
-          "id": "32bc1efd-fc78-4fee-a1ff-90b479d23f16",
+          "id": "8611cf8d-49e7-4e52-afa4-9056d84b32a4",
           "comment": "",
           "command": "type",
           "target": "xpath=(//form//input)[1]",
@@ -495,7 +591,7 @@
           "value": "Pet Futuro QA"
         },
         {
-          "id": "fecb82f1-5e17-4003-a3af-063f8b0e0ff0",
+          "id": "7b41f304-b98d-4769-889b-5fbaa0f6c885",
           "comment": "",
           "command": "select",
           "target": "xpath=//form//select",
@@ -503,7 +599,7 @@
           "value": "label=Cachorro"
         },
         {
-          "id": "e2fee5ff-7cca-4f14-a7b4-1fc06d34f9a1",
+          "id": "ded43ab7-9ac0-488c-9d02-4d5d7d7219b9",
           "comment": "",
           "command": "type",
           "target": "xpath=//form//input[@type='date']",
@@ -511,7 +607,7 @@
           "value": "2030-01-01"
         },
         {
-          "id": "d35f5802-b28e-4ae3-861c-c1949c654ae4",
+          "id": "0548b027-6d05-42a2-ae36-b4abda71cc18",
           "comment": "",
           "command": "click",
           "target": "xpath=//button[contains(.,'Salvar')]",
@@ -519,7 +615,7 @@
           "value": ""
         },
         {
-          "id": "77482a73-0f3f-4bd2-90c2-81db01bc4f21",
+          "id": "7c8053a2-b69a-4fdd-98d7-e192993ac419",
           "comment": "",
           "command": "waitForElementPresent",
           "target": "xpath=//*[contains(text(),'A data de nascimento deve ser uma data passada')]",
@@ -527,7 +623,7 @@
           "value": "15000"
         },
         {
-          "id": "096822c6-92e3-4ec9-bdda-5951f2459532",
+          "id": "b744bef1-48f0-4b4b-b552-19e714921c7a",
           "comment": "",
           "command": "waitForElementVisible",
           "target": "xpath=//*[contains(text(),'A data de nascimento deve ser uma data passada')]",
@@ -539,18 +635,18 @@
   ],
   "suites": [
     {
-      "id": "b26b53ec-55ae-4cc2-b3a7-6445f3135830",
+      "id": "32aee4be-1557-4eaa-b04e-637f2ac1647c",
       "name": "PetFlow GUI - Sprint 4",
       "persistSession": true,
       "parallel": false,
       "timeout": 300,
       "tests": [
-        "eb966119-542b-4973-b72a-f39c23e27604",
-        "abd0ed9a-fabe-4d7c-9bff-ab25432cacd1",
-        "fe1a39b7-714f-4165-8934-2eb6e4a2eb80",
-        "e3b05cb6-07e7-4d91-97e2-718d7f4f51f8",
-        "80186fea-d076-44b0-bdb7-a2a7ccd1a604",
-        "e7af88b4-c79a-49b6-849e-386403b2c59e"
+        "19379523-5142-4789-a77b-59f4d7ec1923",
+        "00f9fb39-a715-45bc-98a9-d7be80ebe87e",
+        "e08c3adf-a647-43e3-8094-df6845d0917f",
+        "66ca9e18-7076-44d8-9d67-89a70efadf1c",
+        "0bbba99f-9a67-43cf-9af2-2aa07abd3bb4",
+        "6bde2663-ea97-407a-8204-b47f2a919638"
       ]
     }
   ],

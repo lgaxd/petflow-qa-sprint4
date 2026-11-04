@@ -24,39 +24,45 @@ O painel do tutor e a lista de pets mostram um *spinner* enquanto a API responde
 
 ## AUTO-GUI-01 — Cadastro de tutor válido (CT-S4-04)
 
-O AUTO-GUI-01 termina com **Sair** e espera o formulário de login: os testes seguintes abrem `/register` e `/login`, que redirecionam para `/tutor` se ainda houver sessão.
+> **Navegador sem sessão (passos 1 a 4, repetidos no início do 02, 03 e 04):** com usuário logado, `/register` e `/login` redirecionam para `/tutor` e os campos não existem. O front guarda a sessão só no `localStorage` (`petflow_token` e `petflow_user`); os passos removem essas chaves e reabrem a página. Assim a suíte não depende de uma execução anterior ter terminado com **Sair**.
 
 | # | Command | Target | Value |
 |---|---|---|---|
 | 1 | open | `/register` |  |
-| 2 | execute script | `return 'qa.gui.' + Date.now() + '@petflow.test'` | `email` |
-| 3 | echo | `${email}` |  |
-| 4 | type | `xpath=//input[@type='text']` | `Tutor QA GUI` |
-| 5 | type | `xpath=//input[@type='email']` | `${email}` |
-| 6 | type | `xpath=//input[@type='tel']` | `(11) 91111-1111` |
-| 7 | type | `xpath=(//input[@type='password'])[1]` | `QaPetflow2026` |
-| 8 | type | `xpath=(//input[@type='password'])[2]` | `QaPetflow2026` |
-| 9 | click | `css=button[type=submit]` |  |
-| 10 | wait for element present | `xpath=//*[contains(text(),'Conta criada!')]` | `15000` |
-| 11 | wait for element visible | `xpath=//*[contains(text(),'Conta criada!')]` | `15000` |
-| 12 | wait for element present | `xpath=//h1[contains(.,'Olá, Tutor')]` | `15000` |
-| 13 | assert element present | `xpath=//h1[contains(.,'Olá, Tutor')]` |  |
-| 14 | click | `xpath=//button[contains(.,'Sair')]` |  |
-| 15 | wait for element present | `css=input[type=email]` | `15000` |
+| 2 | execute script | `localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');` |  |
+| 3 | open | `/register` |  |
+| 4 | wait for element present | `xpath=//input[@type='email']` | `15000` |
+| 5 | execute script | `return 'qa.gui.' + Date.now() + '@petflow.test'` | `email` |
+| 6 | echo | `${email}` |  |
+| 7 | type | `xpath=//input[@type='text']` | `Tutor QA GUI` |
+| 8 | type | `xpath=//input[@type='email']` | `${email}` |
+| 9 | type | `xpath=//input[@type='tel']` | `(11) 91111-1111` |
+| 10 | type | `xpath=(//input[@type='password'])[1]` | `QaPetflow2026` |
+| 11 | type | `xpath=(//input[@type='password'])[2]` | `QaPetflow2026` |
+| 12 | click | `css=button[type=submit]` |  |
+| 13 | wait for element present | `xpath=//*[contains(text(),'Conta criada!')]` | `15000` |
+| 14 | wait for element visible | `xpath=//*[contains(text(),'Conta criada!')]` | `15000` |
+| 15 | wait for element present | `xpath=//h1[contains(.,'Olá, Tutor')]` | `15000` |
+| 16 | assert element present | `xpath=//h1[contains(.,'Olá, Tutor')]` |  |
+| 17 | click | `xpath=//button[contains(.,'Sair')]` |  |
+| 18 | wait for element present | `css=input[type=email]` | `15000` |
 
 ## AUTO-GUI-02 — Cadastro com e-mail duplicado (CT-S4-05)
 
 | # | Command | Target | Value |
 |---|---|---|---|
 | 1 | open | `/register` |  |
-| 2 | type | `xpath=//input[@type='text']` | `Tutor QA Duplicado` |
-| 3 | type | `xpath=//input[@type='email']` | `${email}` |
-| 4 | type | `xpath=(//input[@type='password'])[1]` | `QaPetflow2026` |
-| 5 | type | `xpath=(//input[@type='password'])[2]` | `QaPetflow2026` |
-| 6 | click | `css=button[type=submit]` |  |
-| 7 | wait for element present | `xpath=//*[contains(text(),'Tutor já cadastrado')]` | `15000` |
-| 8 | wait for element visible | `xpath=//*[contains(text(),'Tutor já cadastrado')]` | `15000` |
-| 9 | assert element present | `xpath=//h1[contains(.,'Criar conta')]` |  |
+| 2 | execute script | `localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');` |  |
+| 3 | open | `/register` |  |
+| 4 | wait for element present | `xpath=//input[@type='email']` | `15000` |
+| 5 | type | `xpath=//input[@type='text']` | `Tutor QA Duplicado` |
+| 6 | type | `xpath=//input[@type='email']` | `${email}` |
+| 7 | type | `xpath=(//input[@type='password'])[1]` | `QaPetflow2026` |
+| 8 | type | `xpath=(//input[@type='password'])[2]` | `QaPetflow2026` |
+| 9 | click | `css=button[type=submit]` |  |
+| 10 | wait for element present | `xpath=//*[contains(text(),'Tutor já cadastrado')]` | `15000` |
+| 11 | wait for element visible | `xpath=//*[contains(text(),'Tutor já cadastrado')]` | `15000` |
+| 12 | assert element present | `xpath=//h1[contains(.,'Criar conta')]` |  |
 
 > Se rodar este teste isolado, troque `${email}` por um e-mail que já exista (ex.: o do tutor A do plano manual).
 
@@ -65,23 +71,29 @@ O AUTO-GUI-01 termina com **Sair** e espera o formulário de login: os testes se
 | # | Command | Target | Value |
 |---|---|---|---|
 | 1 | open | `/login` |  |
-| 2 | type | `css=input[type=email]` | `${email}` |
-| 3 | type | `css=input[type=password]` | `SenhaErrada99` |
-| 4 | click | `css=button[type=submit]` |  |
-| 5 | wait for element present | `xpath=//*[contains(text(),'E-mail ou senha inválidos')]` | `15000` |
-| 6 | wait for element visible | `xpath=//*[contains(text(),'E-mail ou senha inválidos')]` | `15000` |
+| 2 | execute script | `localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');` |  |
+| 3 | open | `/login` |  |
+| 4 | wait for element present | `css=input[type=email]` | `15000` |
+| 5 | type | `css=input[type=email]` | `${email}` |
+| 6 | type | `css=input[type=password]` | `SenhaErrada99` |
+| 7 | click | `css=button[type=submit]` |  |
+| 8 | wait for element present | `xpath=//*[contains(text(),'E-mail ou senha inválidos')]` | `15000` |
+| 9 | wait for element visible | `xpath=//*[contains(text(),'E-mail ou senha inválidos')]` | `15000` |
 
 ## AUTO-GUI-04 — Login válido do tutor (CT-S4-01)
 
 | # | Command | Target | Value |
 |---|---|---|---|
 | 1 | open | `/login` |  |
-| 2 | type | `css=input[type=email]` | `${email}` |
-| 3 | type | `css=input[type=password]` | `QaPetflow2026` |
-| 4 | click | `css=button[type=submit]` |  |
-| 5 | wait for element present | `xpath=//h1[contains(.,'Olá, Tutor')]` | `15000` |
-| 6 | wait for element visible | `xpath=//h1[contains(.,'Olá, Tutor')]` | `15000` |
-| 7 | assert element present | `xpath=//*[contains(text(),'Seu saldo de pontos')]` |  |
+| 2 | execute script | `localStorage.removeItem('petflow_token'); localStorage.removeItem('petflow_user');` |  |
+| 3 | open | `/login` |  |
+| 4 | wait for element present | `css=input[type=email]` | `15000` |
+| 5 | type | `css=input[type=email]` | `${email}` |
+| 6 | type | `css=input[type=password]` | `QaPetflow2026` |
+| 7 | click | `css=button[type=submit]` |  |
+| 8 | wait for element present | `xpath=//h1[contains(.,'Olá, Tutor')]` | `15000` |
+| 9 | wait for element visible | `xpath=//h1[contains(.,'Olá, Tutor')]` | `15000` |
+| 10 | assert element present | `xpath=//*[contains(text(),'Seu saldo de pontos')]` |  |
 
 ## AUTO-GUI-05 — Cadastro de pet válido (CT-S4-08)
 
@@ -132,9 +144,11 @@ Mesma preparação do AUTO-GUI-05 (passos 1 a 5). Com a data em ISO, a API recus
 
 `PetFlow-QA-Sprint4.side` (nesta pasta) contém os seis testes acima, prontos para abrir no Selenium IDE (*Open project*) e servir de referência durante a gravação.
 
-Validado em 03/11/2026 (23:37) com `selenium-side-runner` 4.0.13 (Microsoft Edge, idioma pt-BR) contra o front publicado: 6/6 testes passaram, veja [`evidencias/selenium-side-runner.txt`](../evidencias/selenium-side-runner.txt). O runner 4.0.13 trava quando a suíte usa *Persist session* (depois do primeiro teste a sessão é fechada e os demais esperam até o timeout). Por isso a validação rodou em duas fases: AUTO-GUI-01 e, em seguida, AUTO-GUI-02 a 06 com o e-mail criado pelo 01 e um login antes do 05 e 06, que é o que o *Persist session* faz no Selenium IDE. Como o WebDriver digita a data tecla a tecla, nessa validação as datas ISO do projeto são convertidas para a ordem do pt-BR (`10/05/2020`); no Selenium IDE vale o ISO.
+Validado em 03/11/2026 (23:47) com `selenium-side-runner` 4.0.13 (Microsoft Edge, idioma pt-BR) contra o front publicado: 6/6 testes passaram, veja [`evidencias/selenium-side-runner.txt`](../evidencias/selenium-side-runner.txt). O runner 4.0.13 trava quando a suíte usa *Persist session* (depois do primeiro teste a sessão é fechada e os demais esperam até o timeout). Por isso a validação rodou em duas fases: AUTO-GUI-01 e, em seguida, AUTO-GUI-02 a 06 com o e-mail criado pelo 01 e um login antes do 05 e 06, que é o que o *Persist session* faz no Selenium IDE. Como o WebDriver digita a data tecla a tecla, nessa validação as datas ISO do projeto são convertidas para a ordem do pt-BR (`10/05/2020`); no Selenium IDE vale o ISO.
 
 **Primeira execução no Selenium IDE (03/11/2026, 23:28):** falhou por dois motivos já corrigidos neste arquivo: verificações sem espera pelo carregamento da API e datas em `dd/mm/aaaa`. A falha do AUTO-GUI-01 manteve a sessão aberta, o que derrubou em cascata os testes 02 a 04.
+
+**Segunda execução no Selenium IDE (03/11/2026, 23:44):** o AUTO-GUI-05 gravou o pet com a data correta e o 06 teve a data futura recusada, mas 01 a 04 falharam porque o navegador ainda estava logado com o tutor da execução anterior. Os testes 01 a 04 agora limpam a sessão no início; a validação por linha de comando começou propositalmente logada para reproduzir esse cenário.
 
 ## O que mostrar no vídeo (requisito: preparação/configuração, execução e resultados)
 
