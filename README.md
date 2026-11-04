@@ -6,7 +6,7 @@ Entrega da disciplina **Compliance, Quality Assurance & Tests** do Challenge FIA
 
 | Item | Link |
 |---|---|
-| **Azure Boards — plano de testes manuais (Parte A)** | `<COLE AQUI o link do Boards/Sprint com as Tasks CT-S4-01 a CT-S4-24>` |
+| **Azure Boards — plano de testes manuais (Parte A)** | https://dev.azure.com/RM562027/PetFlow |
 | **Vídeo — configuração e execução dos testes automatizados (Parte B)** | `<COLE AQUI o link do vídeo>` |
 | Aplicação web testada | https://561413-petflow-front.azurewebsites.net |
 | API testada (Swagger) | https://561413-petflow-webapp.azurewebsites.net/swagger |
@@ -15,10 +15,12 @@ O professor está cadastrado na organização do Azure DevOps com perfil **Basic
 
 ## Integrantes
 
-| Nome | RM | Turma |
-|---|---|---|
-| Lucas Grillo Alcântara | 561413 | `<2TDS...>` |
-| `<nome>` | `<RM>` | `<turma>` |
+| Nome | RM |
+|---|---:|
+| Lucas Grillo Alcântara | 561413 |
+| Pietro Ferreira Gomes Abrahamian | 561469 |
+| Pedro Peres Benitez | 561792 |
+| Lucca Ramos Mussumecci | 562027 |
 
 ## Parte A — Testes manuais (Azure Boards)
 
@@ -59,7 +61,8 @@ A coleção cria a própria massa de dados a cada execução (tutores com e-mail
 ## Estrutura
 
 ```
-docs/      especificação dos casos de teste manuais
-postman/   coleção e environment de exemplo (sem credenciais)
-selenium/  projeto .side do Selenium IDE e roteiro de gravação
+docs/       especificação dos casos de teste manuais
+postman/    coleção e environment de exemplo (sem credenciais)
+selenium/   projeto .side do Selenium IDE e roteiro de gravação
+evidencias/ saídas reais das execuções automatizadas (selenium-side-runner)
 ```
