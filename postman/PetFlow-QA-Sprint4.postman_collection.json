@@ -1,0 +1,1875 @@
+{
+  "info": {
+    "name": "PetFlow - Automação QA Sprint 4",
+    "description": "Automação de testes de API/serviço (Parte B - Compliance, QA & Tests). Cada requisição de teste leva o ID do caso manual correspondente (CT-S4-xx) no Azure Boards. Rode a coleção inteira, em ordem, no Collection Runner ou com newman. Massa de dados controlada: cada execução cria tutores com e-mail único (timestamp) e usa as regras de pontuação do seed (cadastro de pet = 5, evento realizado = 10, cupom do template 1 = 20).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Autenticação e acesso",
+      "description": "CT-S4-01, 02, 03 e 05, 06 (cadastro).",
+      "item": [
+        {
+          "name": "Gerar massa: criar tutor A",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const stamp = Date.now().toString();",
+                  "pm.collectionVariables.set(\"stamp\", stamp);",
+                  "const d = (n) => { const x = new Date(); x.setUTCDate(x.getUTCDate() + n); return x.toISOString().slice(0, 10); };",
+                  "pm.collectionVariables.set(\"date_past\", d(-1));",
+                  "pm.collectionVariables.set(\"date_future\", d(30));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 201\", function () {",
+                  "    pm.expect([201]).to.include(pm.response.code);",
+                  "});",
+                  "if (pm.response.code === 201) pm.collectionVariables.set(\"tutor_id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tutors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tutors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tutor QA A\",\n  \"email\": \"qa.a.{{stamp}}@petflow.test\",\n  \"phone\": \"(11) 91111-1111\",\n  \"password\": \"{{qa_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "CT-S4-01 - Login válido do tutor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const b = pm.response.json();",
+                  "pm.test(\"Retorna token JWT e perfil TUTOR\", function () {",
+                  "    pm.expect(b.token).to.be.a('string').and.not.empty;",
+                  "    pm.expect(b.role).to.eql('TUTOR');",
+                  "});",
+                  "pm.collectionVariables.set(\"token\", b.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.a.{{stamp}}@petflow.test\",\n  \"password\": \"{{qa_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "CT-S4-02 - Login com senha inválida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 401\", function () {",
+                  "    pm.expect([401]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Mensagem genérica de credenciais inválidas\", function () {",
+                  "    pm.expect(pm.response.json().message).to.eql('E-mail ou senha inválidos');",
+                  "});",
+                  "pm.test(\"Não retorna token\", function () { pm.expect(pm.response.json().token).to.be.undefined; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.a.{{stamp}}@petflow.test\",\n  \"password\": \"SenhaErrada99\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "CT-S4-03 - Tutor tenta listar tutores (perfil ADMIN exigido)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 403\", function () {",
+                  "    pm.expect([403]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 403\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(403);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tutors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tutors"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ref: obter espécie e tipo de evento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.collectionVariables.set(\"species_id\", pm.response.json()[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/species",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "species"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Ref: obter tipo de evento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.collectionVariables.set(\"event_type_id\", pm.response.json()[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/event-types",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "event-types"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-05 - Cadastro de tutor com e-mail duplicado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 409\", function () {",
+                  "    pm.expect([409]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 409\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(409);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tutors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tutors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tutor QA Duplicado\",\n  \"email\": \"qa.a.{{stamp}}@petflow.test\",\n  \"phone\": \"(11) 92222-2222\",\n  \"password\": \"{{qa_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "CT-S4-06 - Cadastro de tutor com senha fora da regra",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 400\", function () {",
+                  "    pm.expect([400]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Erro de validação aponta o campo password\", function () {",
+                  "    pm.expect(JSON.stringify(pm.response.json())).to.include('password');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tutors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tutors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tutor QA Senha Fraca\",\n  \"email\": \"qa.fraca.{{stamp}}@petflow.test\",\n  \"phone\": \"(11) 93333-3333\",\n  \"password\": \"abcdefgh\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Pets",
+      "description": "CT-S4-08, 09, 16.",
+      "item": [
+        {
+          "name": "CT-S4-08 - Cadastro de pet válido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 201\", function () {",
+                  "    pm.expect([201]).to.include(pm.response.code);",
+                  "});",
+                  "const b = pm.response.json();",
+                  "pm.test(\"Pet criado com os dados enviados\", function () {",
+                  "    pm.expect(b.name).to.eql('Thor QA');",
+                  "    pm.expect(b.id).to.be.a('number');",
+                  "});",
+                  "pm.collectionVariables.set(\"pet_id\", b.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pets",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Thor QA\",\n  \"breed\": \"Labrador\",\n  \"birthDate\": \"2020-05-10\",\n  \"weight\": 28.5,\n  \"speciesId\": {{species_id}},\n  \"tutorId\": {{tutor_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-16 - Consultar saldo e extrato (após cadastro do pet)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const p = pm.response.json();",
+                  "pm.test(\"Cadastro de pet gera 5 pontos: saldo = 5 pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(5);",
+                  "});",
+                  "pm.test(\"Extrato contém o lançamento do cadastro do pet\", function () {",
+                  "    pm.expect(p.history).to.be.an('array').with.lengthOf(1);",
+                  "    pm.expect(p.history[0].points).to.eql(5);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/gamification/points",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "points"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-09 - Cadastro de pet com data de nascimento futura",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 400\", function () {",
+                  "    pm.expect([400]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Erro de validação aponta birthDate\", function () {",
+                  "    pm.expect(JSON.stringify(pm.response.json())).to.include('birthDate');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pets",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pet Futuro QA\",\n  \"breed\": \"SRD\",\n  \"birthDate\": \"{{date_future}}\",\n  \"weight\": 5,\n  \"speciesId\": {{species_id}},\n  \"tutorId\": {{tutor_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Eventos de saúde e pontuação",
+      "description": "CT-S4-11 a 15.",
+      "item": [
+        {
+          "name": "CT-S4-14 - Evento de saúde REALIZADO com data futura",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 422\", function () {",
+                  "    pm.expect([422]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Código FUTURE_DATE_NOT_ALLOWED\", function () {",
+                  "    pm.expect(pm.response.json().code).to.eql('FUTURE_DATE_NOT_ALLOWED');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health-events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health-events"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_future}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-15 - Evento de saúde para pet inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 404\", function () {",
+                  "    pm.expect([404]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 404\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(404);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health-events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health-events"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_future}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": 999999999,\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-12 (passo 1) - Agendar evento: não pontua",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 201\", function () {",
+                  "    pm.expect([201]).to.include(pm.response.code);",
+                  "});",
+                  "pm.collectionVariables.set(\"event_id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health-events",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health-events"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-12 (passo 2) - Saldo continua 5 com evento AGENDADO",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const p = pm.response.json();",
+                  "pm.test(\"Evento agendado não pontua: saldo = 5 pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(5);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/gamification/points",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "points"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-11 / CT-S4-12 (passo 3) - Concluir evento (REALIZADO)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Status REALIZADO\", function () { pm.expect(pm.response.json().status).to.eql(\"REALIZADO\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health-events/{{event_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health-events",
+                "{{event_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-12 (passo 4) - Saldo = 15 após conclusão",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const p = pm.response.json();",
+                  "pm.test(\"Conclusão gera 10 pontos: saldo = 15 pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(15);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/gamification/points",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "points"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-12 (passo 5) - Reenviar REALIZADO não pontua de novo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health-events/{{event_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health-events",
+                "{{event_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-12 (passo 6) - Saldo continua 15 (sem duplicidade)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const p = pm.response.json();",
+                  "pm.test(\"Pontuação concedida uma única vez: saldo = 15 pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(15);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/gamification/points",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "points"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-13 - Transição inválida REALIZADO -> AGENDADO",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 422\", function () {",
+                  "    pm.expect([422]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 422\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(422);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health-events/{{event_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health-events",
+                "{{event_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Cupons e resgate",
+      "description": "CT-S4-07, 17 a 22.",
+      "item": [
+        {
+          "name": "Prep: login do administrador",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Perfil ADMIN\", function () { pm.expect(pm.response.json().role).to.eql(\"ADMIN\"); });",
+                  "pm.collectionVariables.set(\"admin_token\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "CT-S4-07 - Administrador cadastra cupom de teste",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 201\", function () {",
+                  "    pm.expect([201]).to.include(pm.response.code);",
+                  "});",
+                  "pm.collectionVariables.set(\"coupon_id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/coupons",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "coupons"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"QA{{stamp}}\",\n  \"status\": \"DISPONIVEL\",\n  \"expirationDate\": \"2099-12-31\",\n  \"templateId\": {{coupon_template_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-17 - Consultar catálogo de cupons",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const c = pm.response.json().content.find(x => x.code === 'QA' + pm.collectionVariables.get('stamp'));",
+                  "pm.test(\"Cupom de teste aparece no catálogo\", function () { pm.expect(c).to.not.be.undefined; });",
+                  "pm.test(\"Pré-condição dos dados controlados: cupom custa 20 pontos\", function () { pm.expect(c.pointsRequired).to.eql(20); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/gamification/coupons/available?page=0&size=100",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "coupons",
+                "available"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "100"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-19 - Resgate de cupom com saldo insuficiente (15 < 20)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 422\", function () {",
+                  "    pm.expect([422]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Erro de pontos insuficientes\", function () { pm.expect(pm.response.json().error).to.eql(\"Pontos insuficientes\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gamification/redeem",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "redeem"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponId\": {{coupon_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Prep CT-S4-18: cadastrar 2º pet (+5 pontos => saldo 20)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 201\", function () {",
+                  "    pm.expect([201]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pets",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mia QA\",\n  \"breed\": \"Siamês\",\n  \"birthDate\": \"2021-08-01\",\n  \"weight\": 4.2,\n  \"speciesId\": {{species_id}},\n  \"tutorId\": {{tutor_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-18 - Resgate de cupom com saldo suficiente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.collectionVariables.set(\"redeem_id\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gamification/redeem",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "redeem"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponId\": {{coupon_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-18 (verificação) - Saldo = 0 após resgate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "const p = pm.response.json();",
+                  "pm.test(\"Resgate debita 20 pontos: saldo = 0 pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(0);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/gamification/points",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "points"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-20 - Resgate de cupom já resgatado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 422\", function () {",
+                  "    pm.expect([422]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 422\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(422);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gamification/redeem",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "redeem"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponId\": {{coupon_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-21 - Resgate de cupom inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 404\", function () {",
+                  "    pm.expect([404]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 404\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(404);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gamification/redeem",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "redeem"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponId\": 999999999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-22 - Resgate sem autenticação",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 401\", function () {",
+                  "    pm.expect([401]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/gamification/redeem",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "gamification",
+                "redeem"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"couponId\": {{coupon_id}}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Isolamento entre tutores",
+      "description": "CT-S4-10 e 23.",
+      "item": [
+        {
+          "name": "Prep CT-S4-10/23: criar tutor B",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 201\", function () {",
+                  "    pm.expect([201]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/tutors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tutors"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tutor QA B\",\n  \"email\": \"qa.b.{{stamp}}@petflow.test\",\n  \"phone\": \"(11) 94444-4444\",\n  \"password\": \"{{qa_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Prep CT-S4-10/23: login do tutor B",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.collectionVariables.set(\"token_b\", pm.response.json().token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa.b.{{stamp}}@petflow.test\",\n  \"password\": \"{{qa_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "CT-S4-10 - Tutor B não acessa pet do tutor A",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 403\", function () {",
+                  "    pm.expect([403]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 403\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(403);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pets/{{pet_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pets",
+                "{{pet_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-23 - Tutor B não acessa resgate do tutor A",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 403\", function () {",
+                  "    pm.expect([403]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Corpo de erro padronizado com status 403\", function () {",
+                  "    const b = pm.response.json();",
+                  "    pm.expect(b.status).to.eql(403);",
+                  "    pm.expect(b.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/redeems/{{redeem_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "redeems",
+                "{{redeem_id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "CT-S4-23 (verificação) - Lista de resgates do tutor B vem vazia",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status esperado: 200\", function () {",
+                  "    pm.expect([200]).to.include(pm.response.code);",
+                  "});",
+                  "pm.test(\"Nenhum resgate de outro tutor\", function () { pm.expect(pm.response.json().content).to.be.an(\"array\").that.is.empty; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/redeems?page=0&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "redeems"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token_b}}",
+                  "type": "string"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "stamp",
+      "value": ""
+    },
+    {
+      "key": "date_past",
+      "value": ""
+    },
+    {
+      "key": "date_future",
+      "value": ""
+    },
+    {
+      "key": "tutor_id",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "token_b",
+      "value": ""
+    },
+    {
+      "key": "admin_token",
+      "value": ""
+    },
+    {
+      "key": "species_id",
+      "value": ""
+    },
+    {
+      "key": "event_type_id",
+      "value": ""
+    },
+    {
+      "key": "pet_id",
+      "value": ""
+    },
+    {
+      "key": "event_id",
+      "value": ""
+    },
+    {
+      "key": "coupon_id",
+      "value": ""
+    },
+    {
+      "key": "redeem_id",
+      "value": ""
+    }
+  ]
+}
