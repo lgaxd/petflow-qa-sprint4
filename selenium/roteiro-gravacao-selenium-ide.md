@@ -24,6 +24,7 @@ Use `${email}` nos campos de e-mail. Coloque os seis testes em uma suíte, nesta
 |---|---|---|---|
 | 1 | open | `/register` | |
 | 2 | execute script | `return 'qa.gui.' + Date.now() + '@petflow.test'` | `email` |
+| 2a | echo | `${email}` | |
 | 3 | type | `xpath=//input[@type='text']` | `Tutor QA GUI` |
 | 4 | type | `xpath=//input[@type='email']` | `${email}` |
 | 5 | type | `xpath=//input[@type='tel']` | `(11) 91111-1111` |
@@ -74,13 +75,20 @@ Use `${email}` nos campos de e-mail. Coloque os seis testes em uma suíte, nesta
 
 Pré-condição: AUTO-GUI-04 executado (usuário logado).
 
+> **Por que abrir, cancelar e reabrir o modal (passos 1a–1e):** o formulário de pet nasce com a primeira espécie *já carregada* de `GET /species`. Se o modal abre antes dessa resposta, o estado fica `speciesId = 0`; a lista mostra "Cachorro", mas selecionar a opção já exibida não dispara `onChange`, e a API responde 409 "Registro relacionado não encontrado". Na reprodução automática isso acontece sempre. Os passos esperam as espécies e reabrem o modal. Observado no front publicado em 03/11/2026; o comportamento é do front, não do teste.
+>
+> **Data:** `type` em `input type=date` envia teclas na ordem do idioma do navegador. Com o navegador em **pt-BR** use `dd/mm/aaaa` (`10/05/2020`); em inglês (en-US) use `05/10/2020`. Digitar `2020-05-10` em pt-BR gera `0510-02-20`.
+
 | # | Command | Target | Value |
 |---|---|---|---|
-| 1 | open | `/tutor/pets` | |
-| 2 | click | `xpath=//button[contains(.,'Novo pet')]` | |
+| 1a | open | `/tutor/pets` | |
+| 1b | click | `xpath=//button[contains(.,'Novo pet')]` | |
+| 1c | wait for element present | `xpath=//form//select/option[.='Cachorro']` | `30000` |
+| 1d | click | `xpath=//button[contains(.,'Cancelar')]` | |
+| 1e | click | `xpath=//button[contains(.,'Novo pet')]` | |
 | 3 | type | `xpath=(//form//input)[1]` | `Thor QA` |
 | 4 | select | `xpath=//form//select` | `label=Cachorro` |
-| 5 | type | `xpath=//form//input[@type='date']` | `2020-05-10` |
+| 5 | type | `xpath=//form//input[@type='date']` | `10/05/2020` |
 | 6 | type | `xpath=//form//input[@type='number']` | `28.5` |
 | 7 | click | `xpath=//button[contains(.,'Salvar')]` | |
 | 8 | wait for element visible | `xpath=//*[contains(text(),'Pet cadastrado com sucesso.')]` | `10000` |
@@ -90,15 +98,20 @@ Pré-condição: AUTO-GUI-04 executado (usuário logado).
 
 | # | Command | Target | Value |
 |---|---|---|---|
-| 1 | open | `/tutor/pets` | |
-| 2 | click | `xpath=//button[contains(.,'Novo pet')]` | |
+| 1a–1e | | mesmos passos 1a–1e do AUTO-GUI-05 | |
 | 3 | type | `xpath=(//form//input)[1]` | `Pet Futuro QA` |
 | 4 | select | `xpath=//form//select` | `label=Cachorro` |
-| 5 | type | `xpath=//form//input[@type='date']` | `2030-01-01` |
+| 5 | type | `xpath=//form//input[@type='date']` | `01/01/2030` (pt-BR; en-US: `01/01/2030`) |
 | 6 | click | `xpath=//button[contains(.,'Salvar')]` | |
 | 7 | wait for element visible | `xpath=//*[contains(text(),'A data de nascimento deve ser uma data passada')]` | `10000` |
 
 ---
+
+## Projeto pronto e validação por linha de comando
+
+`PetFlow-QA-Sprint4.side` (nesta pasta) contém os seis testes acima, prontos para abrir no Selenium IDE (*Open project*) e servir de referência durante a gravação.
+
+Validado em 03/11/2026 com `selenium-side-runner` 4.0.13 (Microsoft Edge, idioma pt-BR) contra o front publicado: 6/6 testes passaram, veja [`evidencias/selenium-side-runner.txt`](../evidencias/selenium-side-runner.txt). O runner 4.0.13 trava quando a suíte usa *Persist session* (depois do primeiro teste a sessão é fechada e os demais esperam até o timeout). Por isso a validação rodou em duas fases: AUTO-GUI-01 e, em seguida, AUTO-GUI-02 a 06 com o e-mail criado pelo 01 e um login antes do 05 e 06, que é o que o *Persist session* faz no Selenium IDE.
 
 ## O que mostrar no vídeo (requisito: preparação/configuração, execução e resultados)
 

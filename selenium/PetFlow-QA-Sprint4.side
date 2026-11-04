@@ -1,0 +1,489 @@
+{
+  "id": "26da4fb4-b592-4dbe-97cf-6fd1e8812c99",
+  "version": "2.0",
+  "name": "PetFlow QA Sprint 4",
+  "url": "https://561413-petflow-front.azurewebsites.net",
+  "tests": [
+    {
+      "id": "99c52dc3-c533-406a-bd56-95d13bfed790",
+      "name": "AUTO-GUI-01 - Cadastro de tutor valido (CT-S4-04)",
+      "commands": [
+        {
+          "id": "51934601-b6bc-4571-9975-4c61e9a9b404",
+          "comment": "",
+          "command": "open",
+          "target": "/register",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "a007756e-ffa3-4c4a-bdc6-a3643c1b8068",
+          "comment": "",
+          "command": "executeScript",
+          "target": "return 'qa.gui.' + Date.now() + '@petflow.test'",
+          "targets": [],
+          "value": "email"
+        },
+        {
+          "id": "4b149840-de58-44ec-af8f-4ea550b6aefd",
+          "comment": "",
+          "command": "echo",
+          "target": "${email}",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "77a85040-3f36-46ae-957a-69ead04e47f0",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//input[@type='text']",
+          "targets": [],
+          "value": "Tutor QA GUI"
+        },
+        {
+          "id": "99784385-03e9-4ae9-bfc0-1856b702a6d9",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//input[@type='email']",
+          "targets": [],
+          "value": "${email}"
+        },
+        {
+          "id": "1da1ed9b-2023-497f-b7db-ce36d0024639",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//input[@type='tel']",
+          "targets": [],
+          "value": "(11) 91111-1111"
+        },
+        {
+          "id": "09472540-a2af-4e59-8dc2-c6eb304785b9",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=(//input[@type='password'])[1]",
+          "targets": [],
+          "value": "QaPetflow2026"
+        },
+        {
+          "id": "02b99c97-def0-4a87-923c-5a6ba3eaba7f",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=(//input[@type='password'])[2]",
+          "targets": [],
+          "value": "QaPetflow2026"
+        },
+        {
+          "id": "8a63018e-5333-47b5-8f3f-7d1c5aa80234",
+          "comment": "",
+          "command": "click",
+          "target": "css=button[type=submit]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "3a452d1b-952a-48e8-84e2-99769acfcd15",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//*[contains(text(),'Conta criada!')]",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "0f2efbaf-ee32-4fd6-98f9-178a3127157a",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "xpath=//h1[contains(.,'Olá, Tutor')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "dcacf797-dc3d-4baf-9030-72c0335eab06",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Sair')]",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "8bb0bfec-0acc-4b78-b55a-1bd47e0ee2c7",
+      "name": "AUTO-GUI-02 - Cadastro com e-mail duplicado (CT-S4-05)",
+      "commands": [
+        {
+          "id": "30bde09c-4ee3-4080-ac77-c36dd1a88d60",
+          "comment": "",
+          "command": "open",
+          "target": "/register",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c8046f3d-ee54-496f-8951-4674b9b21936",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//input[@type='text']",
+          "targets": [],
+          "value": "Tutor QA Duplicado"
+        },
+        {
+          "id": "b304ec66-a305-4b77-b04a-9c140f22c8ef",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//input[@type='email']",
+          "targets": [],
+          "value": "${email}"
+        },
+        {
+          "id": "a928d3c2-7dc6-43c1-87ee-c296fb93c0e9",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=(//input[@type='password'])[1]",
+          "targets": [],
+          "value": "QaPetflow2026"
+        },
+        {
+          "id": "dfea2cad-7139-4f4d-aa4a-fbad571603b5",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=(//input[@type='password'])[2]",
+          "targets": [],
+          "value": "QaPetflow2026"
+        },
+        {
+          "id": "1331e079-8d6f-49d1-af77-159b3dde356a",
+          "comment": "",
+          "command": "click",
+          "target": "css=button[type=submit]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "b5563669-0001-45b9-9730-5152f83a32f8",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//*[contains(text(),'Tutor já cadastrado')]",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "95a04c04-593d-404b-a021-c784df4f5f94",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "xpath=//h1[contains(.,'Criar conta')]",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "d9209a33-887d-4e5d-be36-934a8aa2a616",
+      "name": "AUTO-GUI-03 - Login com senha invalida (CT-S4-02)",
+      "commands": [
+        {
+          "id": "1d5bd3c4-115b-4bc5-bdc2-bbf639f2f280",
+          "comment": "",
+          "command": "open",
+          "target": "/login",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "b0845478-f23b-45f6-89ad-53c6d273571f",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[type=email]",
+          "targets": [],
+          "value": "${email}"
+        },
+        {
+          "id": "9a1ee917-4713-4de8-aba1-34768c378822",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[type=password]",
+          "targets": [],
+          "value": "SenhaErrada99"
+        },
+        {
+          "id": "84ee7257-6616-48bc-9c57-4f2831009c6f",
+          "comment": "",
+          "command": "click",
+          "target": "css=button[type=submit]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "173aa576-cee6-4429-87da-f7c852b42e57",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//*[contains(text(),'E-mail ou senha inválidos')]",
+          "targets": [],
+          "value": "10000"
+        }
+      ]
+    },
+    {
+      "id": "9397e13c-e087-46d4-a70c-e8f34d6a8b3d",
+      "name": "AUTO-GUI-04 - Login valido do tutor (CT-S4-01)",
+      "commands": [
+        {
+          "id": "c22a2ad9-8e20-43ff-b53d-c6ca41060f93",
+          "comment": "",
+          "command": "open",
+          "target": "/login",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "17646835-99ae-4241-90a7-c1ec5bb0129b",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[type=email]",
+          "targets": [],
+          "value": "${email}"
+        },
+        {
+          "id": "3deff8d0-eba0-4b55-adc4-99f5f40b3f37",
+          "comment": "",
+          "command": "type",
+          "target": "css=input[type=password]",
+          "targets": [],
+          "value": "QaPetflow2026"
+        },
+        {
+          "id": "734f3eb8-10aa-48c1-a134-c8f79d96ee31",
+          "comment": "",
+          "command": "click",
+          "target": "css=button[type=submit]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "48f3275e-d318-4348-a26e-df333d58c452",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//h1[contains(.,'Olá, Tutor')]",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "08e79750-e921-4f9d-8b73-5d134a29f94b",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "xpath=//*[contains(text(),'Seu saldo de pontos')]",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "e4ef1709-aab9-4d4e-8033-fc88a4baa67b",
+      "name": "AUTO-GUI-05 - Cadastro de pet valido (CT-S4-08)",
+      "commands": [
+        {
+          "id": "79978a6f-3d8f-4bf8-bf4c-201abb92218e",
+          "comment": "",
+          "command": "open",
+          "target": "/tutor/pets",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "ad1c8bf3-07b9-4978-847e-31e75eeb6cf9",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Novo pet')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6b35cf6d-507a-4b27-b001-9f859af62bb6",
+          "comment": "",
+          "command": "waitForElementPresent",
+          "target": "xpath=//form//select/option[.='Cachorro']",
+          "targets": [],
+          "value": "30000"
+        },
+        {
+          "id": "9415cf2d-fd3a-4a3b-9f20-8cebc39af8d4",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Cancelar')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6f6fbdeb-4e16-49a8-bf1c-7255882d5302",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Novo pet')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "c76136de-0d7d-4dd7-9d03-07f5cda647c8",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=(//form//input)[1]",
+          "targets": [],
+          "value": "Thor QA"
+        },
+        {
+          "id": "81cd4cc3-502f-493f-9d0a-f5f4e7569617",
+          "comment": "",
+          "command": "select",
+          "target": "xpath=//form//select",
+          "targets": [],
+          "value": "label=Cachorro"
+        },
+        {
+          "id": "98db8708-2162-42aa-b0bf-e00af77a308a",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//form//input[@type='date']",
+          "targets": [],
+          "value": "10/05/2020"
+        },
+        {
+          "id": "b5af3840-4825-42ad-96ba-47a7c39cec1a",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//form//input[@type='number']",
+          "targets": [],
+          "value": "28.5"
+        },
+        {
+          "id": "d11fa8ec-42e3-42b0-852d-682127c2c9ba",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Salvar')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "56e3a640-8012-4150-80ea-ee9af415a9ab",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//*[contains(text(),'Pet cadastrado com sucesso.')]",
+          "targets": [],
+          "value": "10000"
+        },
+        {
+          "id": "ad228de8-9dde-42d0-9643-3db914b47c5a",
+          "comment": "",
+          "command": "assertElementPresent",
+          "target": "xpath=//*[contains(text(),'Thor QA')]",
+          "targets": [],
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "47e79f62-f35f-4a84-9088-70a0c53bc137",
+      "name": "AUTO-GUI-06 - Pet com data de nascimento futura (CT-S4-09)",
+      "commands": [
+        {
+          "id": "725831a0-cf94-49d1-9687-536dfa93635f",
+          "comment": "",
+          "command": "open",
+          "target": "/tutor/pets",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "6d5b83ea-86d0-48eb-8e59-91a5063fbc9b",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Novo pet')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "420f3c4f-96ba-4b2b-a388-326c787b7197",
+          "comment": "",
+          "command": "waitForElementPresent",
+          "target": "xpath=//form//select/option[.='Cachorro']",
+          "targets": [],
+          "value": "30000"
+        },
+        {
+          "id": "6edf0c75-32e6-40ea-8bbb-01dd9ff4a150",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Cancelar')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "781f1678-d36e-4eb1-807d-c8035fd1f29e",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Novo pet')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "0b0afe50-4bf3-4521-a275-0e9939205ae3",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=(//form//input)[1]",
+          "targets": [],
+          "value": "Pet Futuro QA"
+        },
+        {
+          "id": "3d2d9a9a-4e2d-4d85-ab49-c51c594c9492",
+          "comment": "",
+          "command": "select",
+          "target": "xpath=//form//select",
+          "targets": [],
+          "value": "label=Cachorro"
+        },
+        {
+          "id": "4179e478-286d-455d-962d-08ca692e2926",
+          "comment": "",
+          "command": "type",
+          "target": "xpath=//form//input[@type='date']",
+          "targets": [],
+          "value": "01/01/2030"
+        },
+        {
+          "id": "d8a8bbb0-f58c-4ee3-ae6a-2d191750060a",
+          "comment": "",
+          "command": "click",
+          "target": "xpath=//button[contains(.,'Salvar')]",
+          "targets": [],
+          "value": ""
+        },
+        {
+          "id": "58cfdfb4-1a92-495b-800e-1622f9712ccc",
+          "comment": "",
+          "command": "waitForElementVisible",
+          "target": "xpath=//*[contains(text(),'A data de nascimento deve ser uma data passada')]",
+          "targets": [],
+          "value": "10000"
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "feba95b5-78ad-45f4-8cbe-1e74d813d7d6",
+      "name": "PetFlow GUI - Sprint 4",
+      "persistSession": true,
+      "parallel": false,
+      "timeout": 300,
+      "tests": [
+        "99c52dc3-c533-406a-bd56-95d13bfed790",
+        "8bb0bfec-0acc-4b78-b55a-1bd47e0ee2c7",
+        "d9209a33-887d-4e5d-be36-934a8aa2a616",
+        "9397e13c-e087-46d4-a70c-e8f34d6a8b3d",
+        "e4ef1709-aab9-4d4e-8033-fc88a4baa67b",
+        "47e79f62-f35f-4a84-9088-70a0c53bc137"
+      ]
+    }
+  ],
+  "urls": [
+    "https://561413-petflow-front.azurewebsites.net"
+  ],
+  "plugins": []
+}
