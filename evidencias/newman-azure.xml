@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="PetFlow - Automação QA Sprint 4" tests="35" time="53.566">
+  <testsuite name="01 - Autenticação e acesso / Gerar massa: criar tutor A" id="36a1c942-16f4-476c-a57b-4312652fef6c" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="3.278">
+    <testcase name="Status esperado: 201" time="3.278" classname="01AutenticacaoEAcessoGerarMassaCriarTutorA"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / CT-S4-01 - Login válido do tutor" id="4676e927-eb58-425e-aeb5-5d1997d0dd50" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.955">
+    <testcase name="Status esperado: 200" time="0.955" classname="01AutenticacaoEAcessoCtS401LoginValidoDoTutor"/>
+    <testcase name="Retorna token JWT e perfil TUTOR" time="0.955" classname="01AutenticacaoEAcessoCtS401LoginValidoDoTutor"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / CT-S4-02 - Login com senha inválida" id="07c6d73f-5077-4c0c-8bea-73668377fe51" timestamp="2026-11-04T02:12:10.838Z" tests="3" failures="0" errors="0" time="1.260">
+    <testcase name="Status esperado: 401" time="1.260" classname="01AutenticacaoEAcessoCtS402LoginComSenhaInvalida"/>
+    <testcase name="Mensagem genérica de credenciais inválidas" time="1.260" classname="01AutenticacaoEAcessoCtS402LoginComSenhaInvalida"/>
+    <testcase name="Não retorna token" time="1.260" classname="01AutenticacaoEAcessoCtS402LoginComSenhaInvalida"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / CT-S4-03 - Tutor tenta listar tutores (perfil ADMIN exigido)" id="a0289672-c14c-4780-8e67-23da0b91841a" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.341">
+    <testcase name="Status esperado: 403" time="0.341" classname="01AutenticacaoEAcessoCtS403TutorTentaListarTutoresPerfilAdminExigido"/>
+    <testcase name="Corpo de erro padronizado com status 403" time="0.341" classname="01AutenticacaoEAcessoCtS403TutorTentaListarTutoresPerfilAdminExigido"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / Ref: obter espécie e tipo de evento" id="6dbf7dd0-fd15-427d-b8b6-231ab5438502" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="0.996">
+    <testcase name="Status esperado: 200" time="0.996" classname="01AutenticacaoEAcessoRefObterEspecieETipoDeEvento"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / Ref: obter tipo de evento" id="50d578d6-4727-44b1-ab96-0114c9b133cd" timestamp="2026-11-04T02:12:10.838Z" tests="3" failures="0" errors="0" time="0.696">
+    <testcase name="Status esperado: 200" time="0.696" classname="01AutenticacaoEAcessoRefObterTipoDeEvento"/>
+    <testcase name="Pré-condição dos dados controlados: tipo de evento 3 vale 40 pontos" time="0.696" classname="01AutenticacaoEAcessoRefObterTipoDeEvento"/>
+    <testcase name="Pré-condição dos dados controlados: custo do cupom = pontos do evento + 10" time="0.696" classname="01AutenticacaoEAcessoRefObterTipoDeEvento"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / CT-S4-05 - Cadastro de tutor com e-mail duplicado" id="82ad656c-ea5f-4630-9292-6db27c52ff69" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.990">
+    <testcase name="Status esperado: 409" time="0.990" classname="01AutenticacaoEAcessoCtS405CadastroDeTutorComEMailDuplicado"/>
+    <testcase name="Corpo de erro padronizado com status 409" time="0.990" classname="01AutenticacaoEAcessoCtS405CadastroDeTutorComEMailDuplicado"/>
+  </testsuite>
+  <testsuite name="01 - Autenticação e acesso / CT-S4-06 - Cadastro de tutor com senha fora da regra" id="462173df-f6f2-4847-88d1-1c5a8d918244" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.364">
+    <testcase name="Status esperado: 400" time="0.364" classname="01AutenticacaoEAcessoCtS406CadastroDeTutorComSenhaForaDaRegra"/>
+    <testcase name="Erro de validação aponta o campo password" time="0.364" classname="01AutenticacaoEAcessoCtS406CadastroDeTutorComSenhaForaDaRegra"/>
+  </testsuite>
+  <testsuite name="02 - Pets / CT-S4-08 - Cadastro de pet válido" id="71ea2a1f-c7d7-43e0-8cd1-3a7f702fcec5" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="2.405">
+    <testcase name="Status esperado: 201" time="2.405" classname="02PetsCtS408CadastroDePetValido"/>
+    <testcase name="Pet criado com os dados enviados" time="2.405" classname="02PetsCtS408CadastroDePetValido"/>
+  </testsuite>
+  <testsuite name="02 - Pets / CT-S4-16 - Consultar saldo e extrato (após cadastro do pet)" id="bd569725-8c0f-4e47-949f-c5be273f748a" timestamp="2026-11-04T02:12:10.838Z" tests="3" failures="0" errors="0" time="1.337">
+    <testcase name="Status esperado: 200" time="1.337" classname="02PetsCtS416ConsultarSaldoEExtratoAposCadastroDoPet"/>
+    <testcase name="Cadastro de pet gera 5 pontos: saldo = 5 pontos" time="1.337" classname="02PetsCtS416ConsultarSaldoEExtratoAposCadastroDoPet"/>
+    <testcase name="Extrato contém o lançamento do cadastro do pet" time="1.337" classname="02PetsCtS416ConsultarSaldoEExtratoAposCadastroDoPet"/>
+  </testsuite>
+  <testsuite name="02 - Pets / CT-S4-09 - Cadastro de pet com data de nascimento futura" id="7247c420-a1a6-40bf-9323-3024bdd1e0bf" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.367">
+    <testcase name="Status esperado: 400" time="0.367" classname="02PetsCtS409CadastroDePetComDataDeNascimentoFutura"/>
+    <testcase name="Erro de validação aponta birthDate" time="0.367" classname="02PetsCtS409CadastroDePetComDataDeNascimentoFutura"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-14 - Evento de saúde REALIZADO com data futura" id="cc277983-bda8-4541-ac25-48eab59b0908" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.335">
+    <testcase name="Status esperado: 422" time="1.335" classname="03EventosDeSaudeEPontuacaoCtS414EventoDeSaudeRealizadoComDataFutura"/>
+    <testcase name="Código FUTURE_DATE_NOT_ALLOWED" time="1.335" classname="03EventosDeSaudeEPontuacaoCtS414EventoDeSaudeRealizadoComDataFutura"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-15 - Evento de saúde para pet inexistente" id="55b88ac9-18d2-484d-86ec-6c72d86eb935" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.992">
+    <testcase name="Status esperado: 404" time="0.992" classname="03EventosDeSaudeEPontuacaoCtS415EventoDeSaudeParaPetInexistente"/>
+    <testcase name="Corpo de erro padronizado com status 404" time="0.992" classname="03EventosDeSaudeEPontuacaoCtS415EventoDeSaudeParaPetInexistente"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-12 (passo 1) - Agendar evento: não pontua" id="88102654-a6e6-457f-874f-59956fa65ee5" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="1.994">
+    <testcase name="Status esperado: 201" time="1.994" classname="03EventosDeSaudeEPontuacaoCtS412Passo1AgendarEventoNaoPontua"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-12 (passo 2) - Saldo continua 5 com evento AGENDADO" id="3f6596b1-2127-4c4a-822f-14c73328cd52" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.324">
+    <testcase name="Status esperado: 200" time="1.324" classname="03EventosDeSaudeEPontuacaoCtS412Passo2SaldoContinua5ComEventoAgendado"/>
+    <testcase name="Evento agendado não pontua: saldo = 5 pontos" time="1.324" classname="03EventosDeSaudeEPontuacaoCtS412Passo2SaldoContinua5ComEventoAgendado"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-11 / CT-S4-12 (passo 3) - Concluir evento (REALIZADO)" id="4b6d9a58-83a7-4ce5-9e2e-bcddbe45bfc6" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="2.294">
+    <testcase name="Status esperado: 200" time="2.294" classname="03EventosDeSaudeEPontuacaoCtS411CtS412Passo3ConcluirEventoRealizado"/>
+    <testcase name="Status REALIZADO" time="2.294" classname="03EventosDeSaudeEPontuacaoCtS411CtS412Passo3ConcluirEventoRealizado"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-12 (passo 4) - Saldo = 5 + pontos do evento após conclusão" id="a709e365-3a35-4d0e-9ee7-e193c6642e0e" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.321">
+    <testcase name="Status esperado: 200" time="1.321" classname="03EventosDeSaudeEPontuacaoCtS412Passo4Saldo5PontosDoEventoAposConclusao"/>
+    <testcase name="Conclusão gera 40 pontos: saldo = 45 pontos" time="1.321" classname="03EventosDeSaudeEPontuacaoCtS412Passo4Saldo5PontosDoEventoAposConclusao"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-12 (passo 5) - Reenviar REALIZADO não pontua de novo" id="1013b4d9-e461-4f8f-a215-d6de8586790f" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="1.331">
+    <testcase name="Status esperado: 200" time="1.331" classname="03EventosDeSaudeEPontuacaoCtS412Passo5ReenviarRealizadoNaoPontuaDeNovo"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-12 (passo 6) - Saldo não muda (sem duplicidade)" id="f8ad69db-9a07-4d36-a486-fbd3c1d930a6" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.434">
+    <testcase name="Status esperado: 200" time="1.434" classname="03EventosDeSaudeEPontuacaoCtS412Passo6SaldoNaoMudaSemDuplicidade"/>
+    <testcase name="Pontuação concedida uma única vez: saldo = 45 pontos" time="1.434" classname="03EventosDeSaudeEPontuacaoCtS412Passo6SaldoNaoMudaSemDuplicidade"/>
+  </testsuite>
+  <testsuite name="03 - Eventos de saúde e pontuação / CT-S4-13 - Transição inválida REALIZADO -> AGENDADO" id="6a44601a-0bc8-4331-9427-3b0dc56667f5" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.311">
+    <testcase name="Status esperado: 422" time="1.311" classname="03EventosDeSaudeEPontuacaoCtS413TransicaoInvalidaRealizadoAgendado"/>
+    <testcase name="Corpo de erro padronizado com status 422" time="1.311" classname="03EventosDeSaudeEPontuacaoCtS413TransicaoInvalidaRealizadoAgendado"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / Prep: login do administrador" id="9ed80a7a-56fb-4798-999f-b011c335df90" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="0.936">
+    <testcase name="Status esperado: 200" time="0.936" classname="04CuponsEResgatePrepLoginDoAdministrador"/>
+    <testcase name="Perfil ADMIN" time="0.936" classname="04CuponsEResgatePrepLoginDoAdministrador"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-07 - Administrador cadastra cupom de teste" id="cf9c2ddb-02bd-40ae-8d9e-a1b12ca78568" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="2.302">
+    <testcase name="Status esperado: 201" time="2.302" classname="04CuponsEResgateCtS407AdministradorCadastraCupomDeTeste"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-17 - Consultar catálogo de cupons" id="585173e9-351d-4c55-8ba8-8fb6cb9bebd8" timestamp="2026-11-04T02:12:10.838Z" tests="3" failures="0" errors="0" time="0.671">
+    <testcase name="Status esperado: 200" time="0.671" classname="04CuponsEResgateCtS417ConsultarCatalogoDeCupons"/>
+    <testcase name="Cupom de teste aparece no catálogo" time="0.671" classname="04CuponsEResgateCtS417ConsultarCatalogoDeCupons"/>
+    <testcase name="Pré-condição dos dados controlados: cupom custa 50 pontos" time="0.671" classname="04CuponsEResgateCtS417ConsultarCatalogoDeCupons"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-19 - Resgate de cupom com saldo insuficiente (5 + pontos do evento &lt; custo)" id="c4e992cf-abf1-4d26-8bac-4378cc4a829a" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.335">
+    <testcase name="Status esperado: 422" time="1.335" classname="04CuponsEResgateCtS419ResgateDeCupomComSaldoInsuficiente5PontosDoEventoLtCusto"/>
+    <testcase name="Erro de pontos insuficientes" time="1.335" classname="04CuponsEResgateCtS419ResgateDeCupomComSaldoInsuficiente5PontosDoEventoLtCusto"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / Prep CT-S4-18: cadastrar 2º pet (+5 pontos => saldo = custo do cupom)" id="afcfa965-dfb2-4085-b657-748686ccc334" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="2.020">
+    <testcase name="Status esperado: 201" time="2.020" classname="04CuponsEResgatePrepCtS418Cadastrar2Pet5PontosSaldoCustoDoCupom"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-18 - Resgate de cupom com saldo suficiente" id="8acaa36c-6250-45c5-b7de-47e6cfc4cabd" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="1.983">
+    <testcase name="Status esperado: 200" time="1.983" classname="04CuponsEResgateCtS418ResgateDeCupomComSaldoSuficiente"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-18 (verificação) - Saldo = 0 após resgate" id="a5c8c346-d45e-489c-94c2-6a736f7f1940" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.338">
+    <testcase name="Status esperado: 200" time="1.338" classname="04CuponsEResgateCtS418VerificacaoSaldo0AposResgate"/>
+    <testcase name="Resgate debita 50 pontos: saldo = 0 pontos" time="1.338" classname="04CuponsEResgateCtS418VerificacaoSaldo0AposResgate"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-20 - Resgate de cupom já resgatado" id="b7f51397-7e8e-4cef-a84d-64d9b0a0a068" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.336">
+    <testcase name="Status esperado: 422" time="1.336" classname="04CuponsEResgateCtS420ResgateDeCupomJaResgatado"/>
+    <testcase name="Corpo de erro padronizado com status 422" time="1.336" classname="04CuponsEResgateCtS420ResgateDeCupomJaResgatado"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-21 - Resgate de cupom inexistente" id="a98fcd47-b6ff-4683-98a9-5256f88548b7" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.343">
+    <testcase name="Status esperado: 404" time="1.343" classname="04CuponsEResgateCtS421ResgateDeCupomInexistente"/>
+    <testcase name="Corpo de erro padronizado com status 404" time="1.343" classname="04CuponsEResgateCtS421ResgateDeCupomInexistente"/>
+  </testsuite>
+  <testsuite name="04 - Cupons e resgate / CT-S4-22 - Resgate sem autenticação" id="72a2b8f0-5a91-4c0c-bffb-7fb226b91bbc" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="7.241">
+    <testcase name="Status esperado: 401" time="7.241" classname="04CuponsEResgateCtS422ResgateSemAutenticacao"/>
+  </testsuite>
+  <testsuite name="05 - Isolamento entre tutores / Prep CT-S4-10/23: criar tutor B" id="886fdc87-6a44-4686-ab5b-2116ab002004" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="2.373">
+    <testcase name="Status esperado: 201" time="2.373" classname="05IsolamentoEntreTutoresPrepCtS41023CriarTutorB"/>
+  </testsuite>
+  <testsuite name="05 - Isolamento entre tutores / Prep CT-S4-10/23: login do tutor B" id="0047aee7-36ef-4d9a-8343-4715853a0dd0" timestamp="2026-11-04T02:12:10.838Z" tests="1" failures="0" errors="0" time="0.972">
+    <testcase name="Status esperado: 200" time="0.972" classname="05IsolamentoEntreTutoresPrepCtS41023LoginDoTutorB"/>
+  </testsuite>
+  <testsuite name="05 - Isolamento entre tutores / CT-S4-10 - Tutor B não acessa pet do tutor A" id="0bbb3f69-3aab-4e4b-b7a0-7da3c092304b" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.348">
+    <testcase name="Status esperado: 403" time="1.348" classname="05IsolamentoEntreTutoresCtS410TutorBNaoAcessaPetDoTutorA"/>
+    <testcase name="Corpo de erro padronizado com status 403" time="1.348" classname="05IsolamentoEntreTutoresCtS410TutorBNaoAcessaPetDoTutorA"/>
+  </testsuite>
+  <testsuite name="05 - Isolamento entre tutores / CT-S4-23 - Tutor B não acessa resgate do tutor A" id="173118f0-ff76-4e5f-98c7-03823c387aab" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.016">
+    <testcase name="Status esperado: 403" time="1.016" classname="05IsolamentoEntreTutoresCtS423TutorBNaoAcessaResgateDoTutorA"/>
+    <testcase name="Corpo de erro padronizado com status 403" time="1.016" classname="05IsolamentoEntreTutoresCtS423TutorBNaoAcessaResgateDoTutorA"/>
+  </testsuite>
+  <testsuite name="05 - Isolamento entre tutores / CT-S4-23 (verificação) - Lista de resgates do tutor B vem vazia" id="a86cb051-ecf7-4664-9dfd-7e9d14a08ca9" timestamp="2026-11-04T02:12:10.838Z" tests="2" failures="0" errors="0" time="1.027">
+    <testcase name="Status esperado: 200" time="1.027" classname="05IsolamentoEntreTutoresCtS423VerificacaoListaDeResgatesDoTutorBVemVazia"/>
+    <testcase name="Nenhum resgate de outro tutor" time="1.027" classname="05IsolamentoEntreTutoresCtS423VerificacaoListaDeResgatesDoTutorBVemVazia"/>
+  </testsuite>
+</testsuites>

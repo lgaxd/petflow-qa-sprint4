@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "PetFlow - Automação QA Sprint 4",
-    "description": "Automação de testes de API/serviço (Parte B - Compliance, QA & Tests). Cada requisição de teste leva o ID do caso manual correspondente (CT-S4-xx) no Azure Boards. Rode a coleção inteira, em ordem, no Collection Runner ou com newman. Massa de dados controlada: cada execução cria tutores com e-mail único (timestamp) e usa as regras de pontuação do seed (cadastro de pet = 5, evento realizado = 10, cupom do template 1 = 20).",
+    "description": "Automação de testes de API/serviço (Parte B - Compliance, QA & Tests). Cada requisição de teste leva o ID do caso manual correspondente (CT-S4-xx) no Azure Boards. Rode a coleção inteira, em ordem, no Collection Runner ou com newman. Massa de dados controlada: cada execução cria tutores com e-mail único (timestamp). As regras de pontuação vêm do environment e são conferidas na própria execução: cadastro de pet = 5 pontos, tipo de evento `event_type_id` vale `event_points`, cupom do template `coupon_template_id` custa `coupon_points`, com coupon_points = event_points + 10 (saldo 0 -> 5 -> 5+E -> C -> 0). Azure (Oracle FIAP): evento 3 \"Consulta de Retorno\" = 40, template 1 = 50. Oracle local (seed V2): evento 1 \"Vacinação\" = 10, template 1 = 20.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -268,7 +268,15 @@
                   "pm.test(\"Status esperado: 200\", function () {",
                   "    pm.expect([200]).to.include(pm.response.code);",
                   "});",
-                  "pm.collectionVariables.set(\"event_type_id\", pm.response.json()[0].id);"
+                  "const E = Number(pm.environment.get(\"event_points\"));",
+                  "const t = pm.response.json().find(x => x.id === Number(pm.environment.get(\"event_type_id\")));",
+                  "pm.test(\"Pré-condição dos dados controlados: tipo de evento \" + pm.environment.get(\"event_type_id\") + \" vale \" + E + \" pontos\", function () {",
+                  "    pm.expect(t, \"tipo de evento não encontrado\").to.not.be.undefined;",
+                  "    pm.expect(t.pointsReward).to.eql(E);",
+                  "});",
+                  "pm.test(\"Pré-condição dos dados controlados: custo do cupom = pontos do evento + 10\", function () {",
+                  "    pm.expect(Number(pm.environment.get(\"coupon_points\"))).to.eql(E + 10);",
+                  "});"
                 ]
               }
             }
@@ -609,7 +617,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_future}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "raw": "{\n  \"description\": \"Evento de saúde - QA Sprint 4\",\n  \"eventDate\": \"{{date_future}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -667,7 +675,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_future}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": 999999999,\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "raw": "{\n  \"description\": \"Evento de saúde - QA Sprint 4\",\n  \"eventDate\": \"{{date_future}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": 999999999,\n  \"eventTypeId\": {{event_type_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -721,7 +729,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "raw": "{\n  \"description\": \"Evento de saúde - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -820,7 +828,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "raw": "{\n  \"description\": \"Evento de saúde - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -840,7 +848,7 @@
           }
         },
         {
-          "name": "CT-S4-12 (passo 4) - Saldo = 15 após conclusão",
+          "name": "CT-S4-12 (passo 4) - Saldo = 5 + pontos do evento após conclusão",
           "event": [
             {
               "listen": "test",
@@ -850,9 +858,10 @@
                   "pm.test(\"Status esperado: 200\", function () {",
                   "    pm.expect([200]).to.include(pm.response.code);",
                   "});",
+                  "const E = Number(pm.environment.get(\"event_points\"));",
                   "const p = pm.response.json();",
-                  "pm.test(\"Conclusão gera 10 pontos: saldo = 15 pontos\", function () {",
-                  "    pm.expect(p.totalPoints).to.eql(15);",
+                  "pm.test(\"Conclusão gera \" + E + \" pontos: saldo = \" + (5 + E) + \" pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(5 + E);",
                   "});"
                 ]
               }
@@ -918,7 +927,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "raw": "{\n  \"description\": \"Evento de saúde - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"REALIZADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -938,7 +947,7 @@
           }
         },
         {
-          "name": "CT-S4-12 (passo 6) - Saldo continua 15 (sem duplicidade)",
+          "name": "CT-S4-12 (passo 6) - Saldo não muda (sem duplicidade)",
           "event": [
             {
               "listen": "test",
@@ -948,9 +957,10 @@
                   "pm.test(\"Status esperado: 200\", function () {",
                   "    pm.expect([200]).to.include(pm.response.code);",
                   "});",
+                  "const E = Number(pm.environment.get(\"event_points\"));",
                   "const p = pm.response.json();",
-                  "pm.test(\"Pontuação concedida uma única vez: saldo = 15 pontos\", function () {",
-                  "    pm.expect(p.totalPoints).to.eql(15);",
+                  "pm.test(\"Pontuação concedida uma única vez: saldo = \" + (5 + E) + \" pontos\", function () {",
+                  "    pm.expect(p.totalPoints).to.eql(5 + E);",
                   "});"
                 ]
               }
@@ -1021,7 +1031,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"description\": \"Vacina V10 - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
+              "raw": "{\n  \"description\": \"Evento de saúde - QA Sprint 4\",\n  \"eventDate\": \"{{date_past}}\",\n  \"status\": \"AGENDADO\",\n  \"petId\": {{pet_id}},\n  \"eventTypeId\": {{event_type_id}}\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1160,9 +1170,10 @@
                   "pm.test(\"Status esperado: 200\", function () {",
                   "    pm.expect([200]).to.include(pm.response.code);",
                   "});",
+                  "const C = Number(pm.environment.get(\"coupon_points\"));",
                   "const c = pm.response.json().content.find(x => x.code === 'QA' + pm.collectionVariables.get('stamp'));",
                   "pm.test(\"Cupom de teste aparece no catálogo\", function () { pm.expect(c).to.not.be.undefined; });",
-                  "pm.test(\"Pré-condição dos dados controlados: cupom custa 20 pontos\", function () { pm.expect(c.pointsRequired).to.eql(20); });"
+                  "pm.test(\"Pré-condição dos dados controlados: cupom custa \" + C + \" pontos\", function () { pm.expect(c.pointsRequired).to.eql(C); });"
                 ]
               }
             }
@@ -1204,7 +1215,7 @@
           }
         },
         {
-          "name": "CT-S4-19 - Resgate de cupom com saldo insuficiente (15 < 20)",
+          "name": "CT-S4-19 - Resgate de cupom com saldo insuficiente (5 + pontos do evento < custo)",
           "event": [
             {
               "listen": "test",
@@ -1259,7 +1270,7 @@
           }
         },
         {
-          "name": "Prep CT-S4-18: cadastrar 2º pet (+5 pontos => saldo 20)",
+          "name": "Prep CT-S4-18: cadastrar 2º pet (+5 pontos => saldo = custo do cupom)",
           "event": [
             {
               "listen": "test",
@@ -1377,8 +1388,9 @@
                   "pm.test(\"Status esperado: 200\", function () {",
                   "    pm.expect([200]).to.include(pm.response.code);",
                   "});",
+                  "const C = Number(pm.environment.get(\"coupon_points\"));",
                   "const p = pm.response.json();",
-                  "pm.test(\"Resgate debita 20 pontos: saldo = 0 pontos\", function () {",
+                  "pm.test(\"Resgate debita \" + C + \" pontos: saldo = 0 pontos\", function () {",
                   "    pm.expect(p.totalPoints).to.eql(0);",
                   "});"
                 ]
@@ -1849,10 +1861,6 @@
     },
     {
       "key": "species_id",
-      "value": ""
-    },
-    {
-      "key": "event_type_id",
       "value": ""
     },
     {

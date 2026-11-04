@@ -56,7 +56,21 @@ Roteiro dos comandos: [selenium/roteiro-gravacao-selenium-ide.md](selenium/rotei
 npx newman run postman/PetFlow-QA-Sprint4.postman_collection.json -e local.postman_environment.json
 ```
 
-A coleção cria a própria massa de dados a cada execução (tutores com e-mail único) e verifica o saldo de pontos em cada etapa: cadastro de pet = 5, evento concluído = 10, cupom de teste = 20 pontos.
+A coleção cria a própria massa de dados a cada execução (tutores com e-mail único) e verifica o saldo de pontos em cada etapa. As regras de pontuação de cada ambiente ficam no environment e são conferidas no início da execução:
+
+| Variável | Azure (Oracle FIAP) | Oracle local (seed V2) |
+|---|---|---|
+| `event_type_id` / `event_points` | `3` (Consulta de Retorno) / `40` | `1` (Vacinação) / `10` |
+| `coupon_template_id` / `coupon_points` | `1` (15% OFF em produtos PataFeliz) / `50` | `1` (15% OFF em ração) / `20` |
+
+Saldo esperado do tutor A no Azure: 0 → 5 → 45 → 50 → 0.
+
+### Evidências
+
+| Execução | Resultado | Arquivo |
+|---|---|---|
+| newman contra a API publicada no Azure | 35 requisições, 64 asserções, **0 falhas** | [evidencias/newman-azure.txt](evidencias/newman-azure.txt) · [JUnit](evidencias/newman-azure.xml) |
+| selenium-side-runner contra o front publicado (Edge) | 6/6 testes passaram | [evidencias/selenium-side-runner.txt](evidencias/selenium-side-runner.txt) |
 
 ## Estrutura
 
@@ -64,5 +78,5 @@ A coleção cria a própria massa de dados a cada execução (tutores com e-mail
 docs/       especificação dos casos de teste manuais
 postman/    coleção e environment de exemplo (sem credenciais)
 selenium/   projeto .side do Selenium IDE e roteiro de gravação
-evidencias/ saídas reais das execuções automatizadas (selenium-side-runner)
+evidencias/ saídas reais das execuções automatizadas (newman e selenium-side-runner)
 ```

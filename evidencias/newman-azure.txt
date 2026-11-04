@@ -1,0 +1,199 @@
+(node:6016) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+newman
+
+PetFlow - Automação QA Sprint 4
+
+□ 01 - Autenticação e acesso
+└ Gerar massa: criar tutor A
+  POST https://561413-petflow-webapp.azurewebsites.net/tutors [201 Created, 928B, 3.2s]
+  √  Status esperado: 201
+
+└ CT-S4-01 - Login válido do tutor
+  POST https://561413-petflow-webapp.azurewebsites.net/auth/login [200 OK, 845B, 955ms]
+  √  Status esperado: 200
+  √  Retorna token JWT e perfil TUTOR
+
+└ CT-S4-02 - Login com senha inválida
+  POST https://561413-petflow-webapp.azurewebsites.net/auth/login [401 Unauthorized, 601B, 1260ms]
+  √  Status esperado: 401
+  √  Mensagem genérica de credenciais inválidas
+  √  Não retorna token
+
+└ CT-S4-03 - Tutor tenta listar tutores (perfil ADMIN exigido)
+  GET https://561413-petflow-webapp.azurewebsites.net/tutors [403 Forbidden, 600B, 341ms]
+  √  Status esperado: 403
+  √  Corpo de erro padronizado com status 403
+
+└ Ref: obter espécie e tipo de evento
+  GET https://561413-petflow-webapp.azurewebsites.net/species [200 OK, 810B, 996ms]
+  √  Status esperado: 200
+
+└ Ref: obter tipo de evento
+  GET https://561413-petflow-webapp.azurewebsites.net/event-types [200 OK, 1.04kB, 696ms]
+  √  Status esperado: 200
+  √  Pré-condição dos dados controlados: tipo de evento 3 vale 40 pontos
+  √  Pré-condição dos dados controlados: custo do cupom = pontos do evento + 10
+
+└ CT-S4-05 - Cadastro de tutor com e-mail duplicado
+  POST https://561413-petflow-webapp.azurewebsites.net/tutors [409 Conflict, 627B, 990ms]
+  √  Status esperado: 409
+  √  Corpo de erro padronizado com status 409
+
+└ CT-S4-06 - Cadastro de tutor com senha fora da regra
+  POST https://561413-petflow-webapp.azurewebsites.net/tutors [400 Bad Request, 703B, 364ms]
+  √  Status esperado: 400
+  √  Erro de validação aponta o campo password
+
+□ 02 - Pets
+└ CT-S4-08 - Cadastro de pet válido
+  POST https://561413-petflow-webapp.azurewebsites.net/pets [201 Created, 625B, 2.4s]
+  √  Status esperado: 201
+  √  Pet criado com os dados enviados
+
+└ CT-S4-16 - Consultar saldo e extrato (após cadastro do pet)
+  GET https://561413-petflow-webapp.azurewebsites.net/gamification/points [200 OK, 653B, 1337ms]
+  √  Status esperado: 200
+  √  Cadastro de pet gera 5 pontos: saldo = 5 pontos
+  √  Extrato contém o lançamento do cadastro do pet
+
+└ CT-S4-09 - Cadastro de pet com data de nascimento futura
+  POST https://561413-petflow-webapp.azurewebsites.net/pets [400 Bad Request, 664B, 367ms]
+  √  Status esperado: 400
+  √  Erro de validação aponta birthDate
+
+□ 03 - Eventos de saúde e pontuação
+└ CT-S4-14 - Evento de saúde REALIZADO com data futura
+  POST https://561413-petflow-webapp.azurewebsites.net/health-events [422 Unprocessable Entity, 667B, 1335ms]
+  √  Status esperado: 422
+  √  Código FUTURE_DATE_NOT_ALLOWED
+
+└ CT-S4-15 - Evento de saúde para pet inexistente
+  POST https://561413-petflow-webapp.azurewebsites.net/health-events [404 Not Found, 617B, 992ms]
+  √  Status esperado: 404
+  √  Corpo de erro padronizado com status 404
+
+└ CT-S4-12 (passo 1) - Agendar evento: não pontua
+  POST https://561413-petflow-webapp.azurewebsites.net/health-events [201 Created, 671B, 1994ms]
+  √  Status esperado: 201
+
+└ CT-S4-12 (passo 2) - Saldo continua 5 com evento AGENDADO
+  GET https://561413-petflow-webapp.azurewebsites.net/gamification/points [200 OK, 653B, 1324ms]
+  √  Status esperado: 200
+  √  Evento agendado não pontua: saldo = 5 pontos
+
+└ CT-S4-11 / CT-S4-12 (passo 3) - Concluir evento (REALIZADO)
+  PUT https://561413-petflow-webapp.azurewebsites.net/health-events/73 [200 OK, 664B, 2.2s]
+  √  Status esperado: 200
+  √  Status REALIZADO
+
+└ CT-S4-12 (passo 4) - Saldo = 5 + pontos do evento após conclusão
+  GET https://561413-petflow-webapp.azurewebsites.net/gamification/points [200 OK, 816B, 1321ms]
+  √  Status esperado: 200
+  √  Conclusão gera 40 pontos: saldo = 45 pontos
+
+└ CT-S4-12 (passo 5) - Reenviar REALIZADO não pontua de novo
+  PUT https://561413-petflow-webapp.azurewebsites.net/health-events/73 [200 OK, 664B, 1331ms]
+  √  Status esperado: 200
+
+└ CT-S4-12 (passo 6) - Saldo não muda (sem duplicidade)
+  GET https://561413-petflow-webapp.azurewebsites.net/gamification/points [200 OK, 816B, 1434ms]
+  √  Status esperado: 200
+  √  Pontuação concedida uma única vez: saldo = 45 pontos
+
+└ CT-S4-13 - Transição inválida REALIZADO -> AGENDADO
+  PUT https://561413-petflow-webapp.azurewebsites.net/health-events/73 [422 Unprocessable Entity, 796B, 1311ms]
+  √  Status esperado: 422
+  √  Corpo de erro padronizado com status 422
+
+□ 04 - Cupons e resgate
+└ Prep: login do administrador
+  POST https://561413-petflow-webapp.azurewebsites.net/auth/login [200 OK, 836B, 936ms]
+  √  Status esperado: 200
+  √  Perfil ADMIN
+
+└ CT-S4-07 - Administrador cadastra cupom de teste
+  POST https://561413-petflow-webapp.azurewebsites.net/coupons [201 Created, 590B, 2.3s]
+  √  Status esperado: 201
+
+└ CT-S4-17 - Consultar catálogo de cupons
+  GET https://561413-petflow-webapp.azurewebsites.net/gamification/coupons/available?page=0&size=100 [200 OK, 1.89kB, 671ms]
+  √  Status esperado: 200
+  √  Cupom de teste aparece no catálogo
+  √  Pré-condição dos dados controlados: cupom custa 50 pontos
+
+└ CT-S4-19 - Resgate de cupom com saldo insuficiente (5 + pontos do evento < custo)
+  POST https://561413-petflow-webapp.azurewebsites.net/gamification/redeem [422 Unprocessable Entity, 740B, 1335ms]
+  √  Status esperado: 422
+  √  Erro de pontos insuficientes
+
+└ Prep CT-S4-18: cadastrar 2º pet (+5 pontos => saldo = custo do cupom)
+  POST https://561413-petflow-webapp.azurewebsites.net/pets [201 Created, 622B, 2s]
+  √  Status esperado: 201
+
+└ CT-S4-18 - Resgate de cupom com saldo suficiente
+  POST https://561413-petflow-webapp.azurewebsites.net/gamification/redeem [200 OK, 589B, 1983ms]
+  √  Status esperado: 200
+
+└ CT-S4-18 (verificação) - Saldo = 0 após resgate
+  GET https://561413-petflow-webapp.azurewebsites.net/gamification/points [200 OK, 1.12kB, 1338ms]
+  √  Status esperado: 200
+  √  Resgate debita 50 pontos: saldo = 0 pontos
+
+└ CT-S4-20 - Resgate de cupom já resgatado
+  POST https://561413-petflow-webapp.azurewebsites.net/gamification/redeem [422 Unprocessable Entity, 669B, 1336ms]
+  √  Status esperado: 422
+  √  Corpo de erro padronizado com status 422
+
+└ CT-S4-21 - Resgate de cupom inexistente
+  POST https://561413-petflow-webapp.azurewebsites.net/gamification/redeem [404 Not Found, 624B, 1343ms]
+  √  Status esperado: 404
+  √  Corpo de erro padronizado com status 404
+
+└ CT-S4-22 - Resgate sem autenticação
+  POST https://561413-petflow-webapp.azurewebsites.net/gamification/redeem [401 Unauthorized, 625B, 7.2s]
+  √  Status esperado: 401
+
+□ 05 - Isolamento entre tutores
+└ Prep CT-S4-10/23: criar tutor B
+  POST https://561413-petflow-webapp.azurewebsites.net/tutors [201 Created, 586B, 2.3s]
+  √  Status esperado: 201
+
+└ Prep CT-S4-10/23: login do tutor B
+  POST https://561413-petflow-webapp.azurewebsites.net/auth/login [200 OK, 845B, 972ms]
+  √  Status esperado: 200
+
+└ CT-S4-10 - Tutor B não acessa pet do tutor A
+  GET https://561413-petflow-webapp.azurewebsites.net/pets/75 [403 Forbidden, 612B, 1348ms]
+  √  Status esperado: 403
+  √  Corpo de erro padronizado com status 403
+
+└ CT-S4-23 - Tutor B não acessa resgate do tutor A
+  GET https://561413-petflow-webapp.azurewebsites.net/redeems/64 [403 Forbidden, 615B, 1016ms]
+  √  Status esperado: 403
+  √  Corpo de erro padronizado com status 403
+
+└ CT-S4-23 (verificação) - Lista de resgates do tutor B vem vazia
+  GET https://561413-petflow-webapp.azurewebsites.net/redeems?page=0&size=10 [200 OK, 757B, 1027ms]
+  √  Status esperado: 200
+  √  Nenhum resgate de outro tutor
+
+┌─────────────────────────┬─────────────────────┬─────────────────────┐
+│                         │            executed │              failed │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│              iterations │                   1 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│                requests │                  35 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│            test-scripts │                  35 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│      prerequest-scripts │                   1 │                   0 │
+├─────────────────────────┼─────────────────────┼─────────────────────┤
+│              assertions │                  64 │                   0 │
+├─────────────────────────┴─────────────────────┴─────────────────────┤
+│ total run duration: 56s                                             │
+├─────────────────────────────────────────────────────────────────────┤
+│ total data received: 10.26kB (approx)                               │
+├─────────────────────────────────────────────────────────────────────┤
+│ average response time: 1530ms [min: 341ms, max: 7.2s, s.d.: 1164ms] │
+└─────────────────────────────────────────────────────────────────────┘
